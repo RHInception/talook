@@ -140,10 +140,10 @@ class BaseHandler(object):
 class StaticFileHandler(BaseHandler):
 
     def __call__(self, environ, start_response, filename):
-        if filename == 'jquery-2.0.3.min.js':
+        if filename == 'jquery-2.0.3.min.js' or filename == 'style.css':
             start_response("200 OK", [(
                 "Content-Type", "application/javascript")])
-            f = open('jquery-2.0.3.min.js', 'r')
+            f = open(filename, 'r')
             for line in f.readlines():
                 yield line
             f.close()
@@ -185,7 +185,7 @@ class QueryHostHandler(BaseHandler):
 
     def __call__(self, environ, start_response, host):
         if host in self._conf['hosts']:
-            data = self.get_from_cache(host, lambda: '{"not": "cache"}')
+            data = self.get_from_cache(host, lambda: '{"not": {"in": "cache"}}')
             #data = urllib.urlopen(str(self._conf['endpoint'] % host))
             json_data = json.loads(data)
 

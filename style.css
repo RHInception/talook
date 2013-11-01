@@ -1,0 +1,29 @@
+body {
+    background-color: #eeeeee;
+    font-family: Tahoma, Geneva, sans-serif;
+}
+
+
+ul {
+    list-style-type: None;
+    margin: 0;
+    padding: 0;
+}
+
+
+.menulist {
+    float: left;
+    width: 20%;
+    height: 100%;
+    background-color: #ffffff;
+    margin: 0px 0px 0px 0px;
+}
+
+.contentcontainer {
+    width: 100%;
+    position: top-right;
+}
+
+.content {
+    width: 100%;
+}
