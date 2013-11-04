@@ -69,7 +69,7 @@ class Router(object):
 
         # Otherwise 404
         start_response("404 File Not Found", [("Content-Type", "text/html")])
-        return "404 File not found."
+        return "404 File Not Found."
 
 
 class BaseHandler(object):
@@ -142,10 +142,13 @@ class BaseHandler(object):
 class StaticFileHandler(BaseHandler):
 
     def __call__(self, environ, start_response, filename):
-        if filename == 'jquery-2.0.3.min.js' or filename == 'style.css':
+        real_name = os.path.sep.join(
+            [os.path.realpath(self._conf['staticdir']), filename])
+        print real_name
+        if os.path.exists(real_name) and os.path.isfile(real_name):
             start_response("200 OK", [(
                 "Content-Type", "application/javascript")])
-            f = open(filename, 'r')
+            f = open(real_name, 'r')
             for line in f.readlines():
                 yield line
             f.close()
@@ -187,7 +190,8 @@ class QueryHostHandler(BaseHandler):
 
     def __call__(self, environ, start_response, host):
         if host in self._conf['hosts']:
-            data = self.get_from_cache(host, lambda: '{"not": {"in": "cache"}}')
+            data = self.get_from_cache(
+                host, lambda: '{"not": {"in": "cache"}}')
             #data = urllib.urlopen(str(self._conf['endpoint'] % host))
             json_data = json.loads(data)
 

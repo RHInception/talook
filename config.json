@@ -8,5 +8,6 @@
     "templatedir": ".",
     "cachedir": "./cache/",
     "cachetime": {"hours": 1},
-    "logdir": "./logs"
+    "logdir": "./logs",
+    "staticdir": "./static"
 }
