@@ -116,9 +116,12 @@ class BaseHandler(object):
                 self.logger.info('Key "%s" is expired in cache.' % key)
 
         self.logger.info('Key "%s" was NOT in cache.' % key)
-        data = source()
-        self.save_to_cache(key, data)
-        return data
+        try:
+            data = source()
+            self.save_to_cache(key, data)
+            return data
+        except Exception, ex:
+            print ex
 
     def save_to_cache(self, key, data):
         """
@@ -196,9 +199,10 @@ class QueryHostHandler(BaseHandler):
 
     def __call__(self, environ, start_response, host):
         if host in self._conf['hosts']:
-            data = self.get_from_cache(
-                host, lambda: '{"not": {"in": "cache"}}')
-            #data = urllib.urlopen(str(self._conf['endpoint'] % host))
+            call_obj = lambda: str(urllib.urlopen(
+                self._conf['endpoint'] % host).read())
+
+            data = self.get_from_cache(host, call_obj)
             json_data = json.loads(data)
 
             start_response("202 OK", [("Content-Type", "application/json")])
@@ -231,8 +235,8 @@ if __name__ == "__main__":
             '/static/(?P<filename>[\w\-\.]*$)': StaticFileHandler(),
         })
 
-        httpd = make_server('', 8888, router, handler_class=SystatsHandler)
-        print "server listening on http://0.0.0.0:8888"
+        httpd = make_server('', 8080, router, handler_class=SystatsHandler)
+        print "server listening on http://0.0.0.0:8080"
         httpd.serve_forever()
     except KeyboardInterrupt:
         print "shutting down..."
