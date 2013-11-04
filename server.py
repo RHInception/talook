@@ -25,6 +25,8 @@ def create_logger(name, filename,
         filename])
     logger = logging.getLogger(name)
     logger.setLevel(logging.INFO)
+    if not os.path.exists(os.path.dirname(logfile)):
+        os.makedirs(os.path.dirname(logfile))
     handler = logging.handlers.TimedRotatingFileHandler(
         logfile, 'd')
     handler.setLevel(logging.INFO)
