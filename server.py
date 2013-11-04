@@ -144,10 +144,16 @@ class StaticFileHandler(BaseHandler):
     def __call__(self, environ, start_response, filename):
         real_name = os.path.sep.join(
             [os.path.realpath(self._conf['staticdir']), filename])
-        print real_name
         if os.path.exists(real_name) and os.path.isfile(real_name):
+            mime_type = 'text/plain'
+            if real_name.endswith('.js'):
+                mime_type = 'application/javascript'
+            elif real_name.endswith('.css'):
+                mime_type = 'text/css'
+            elif real_name.endswith('.png'):
+                mime_type = 'image/png'
             start_response("200 OK", [(
-                "Content-Type", "application/javascript")])
+                "Content-Type", mime_type)])
             f = open(real_name, 'r')
             for line in f.readlines():
                 yield line
