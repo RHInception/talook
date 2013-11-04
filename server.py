@@ -143,8 +143,15 @@ class BaseHandler(object):
 
 
 class StaticFileHandler(BaseHandler):
+    """
+    Handles static file serving. Will ONLY serve 1 directory deep!!
+    """
 
     def __call__(self, environ, start_response, filename):
+        """
+        Returns the content of a CSS, JS or PNG file with the right mimetype
+        if it exists.
+        """
         real_name = os.path.sep.join(
             [os.path.realpath(self._conf['staticdir']), filename])
         if os.path.exists(real_name) and os.path.isfile(real_name):
@@ -171,6 +178,9 @@ class IndexHandler(BaseHandler):
     """
 
     def __call__(self, environ, start_response):
+        """
+        Handles the index page.
+        """
         start_response("200 OK", [("Content-Type", "text/html")])
         return self.render_template('base.html', title='Systats')
 
@@ -181,6 +191,9 @@ class ListHostsHandler(BaseHandler):
     """
 
     def __call__(self, environ, start_response):
+        """
+        Handles the REST API endpoint listing known hosts.
+        """
         start_response("200 OK", [("Content-Type", "application/json")])
         return json.dumps(self._conf['hosts'])
 
@@ -191,13 +204,22 @@ class ListEnvsHandler(BaseHandler):
     """
 
     def __call__(self, environ, start_response):
+        """
+        Handles the REST API endpoint listing known environments.
+        """
         start_response("200 OK", [("Content-Type", "application/json")])
         return json.dumps(self._conf['hosts'].values())
 
 
 class QueryHostHandler(BaseHandler):
+    """
+    Host stats page.
+    """
 
     def __call__(self, environ, start_response, host):
+        """
+        Handles the REST API proxy between restfulstatsjson and the web ui.
+        """
         if host in self._conf['hosts']:
             call_obj = lambda: str(urllib.urlopen(
                 self._conf['endpoint'] % host).read())
