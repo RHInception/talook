@@ -233,7 +233,35 @@ class QueryHostHandler(BaseHandler):
         return self.return_404(start_response)
 
 
-if __name__ == "__main__":
+def make_app():
+    """
+    Creates a WSGI application for use.
+    """
+    return Router({
+        '^/$': IndexHandler(),
+        '/hosts.json$': ListHostsHandler(),
+        '/envs.json$': ListEnvsHandler(),
+        '/host/(?P<host>[\w\.]*).json?$': QueryHostHandler(),
+        '/static/(?P<filename>[\w\-\.]*$)': StaticFileHandler(),
+    })
+
+
+def run_server():
+    """
+    If the server is called directly then serve via wsgiref.
+    """
+    # Using optparse since argparse is not available in 2.5
+    from optparse import OptionParser
+
+    parser = OptionParser()
+    parser.add_option('-p', '--port', dest='port', default=8080,
+                      help='Port to listen on. (Default: 8080)')
+    parser.add_option(
+        '-l', '--listen', dest='listen', default='0.0.0.0',
+        help='Address to listen on. (Default: 0.0.0.0)')
+
+    (options, args) = parser.parse_args()
+
     try:
         from wsgiref.simple_server import make_server, WSGIRequestHandler
 
@@ -247,19 +275,19 @@ if __name__ == "__main__":
                     self.address_string(),
                     self.log_date_time_string(),
                     format % args))
-                #self.headers
 
-        router = Router({
-            '^/$': IndexHandler(),
-            '/hosts.json$': ListHostsHandler(),
-            '/envs.json$': ListEnvsHandler(),
-            '/host/(?P<host>[\w\.]*).json?$': QueryHostHandler(),
-            '/static/(?P<filename>[\w\-\.]*$)': StaticFileHandler(),
-        })
+        application = make_app()
 
-        httpd = make_server('', 8080, router, handler_class=SystatsHandler)
-        print "server listening on http://0.0.0.0:8080"
+        httpd = make_server(
+            options.listen, int(options.port), application,
+            handler_class=SystatsHandler)
+        print "server listening on http://%s:%s" % (
+            options.listen, options.port)
         httpd.serve_forever()
     except KeyboardInterrupt:
         print "shutting down..."
         raise SystemExit(0)
+
+
+if __name__ == "__main__":
+    run_server()
