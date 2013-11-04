@@ -1,19 +1,49 @@
-<html>
+<!DOCTYPE html>
+<html lang="en">
     <head>
         <title>{{- title -}}</title>
         <script src="/static/jquery-2.0.3.min.js"></script>
-        <link rel="stylesheet" type="text/css" href="/static/style.css">
+        <script src="/static/bootstrap.min.js"></script>
+        <link href="/static/bootstrap.min.css" rel="stylesheet">
+        <link href="/static/style.css" rel="stylesheet">
     </head>
     <body>
-        <div class="menulist">
-            <ul>
-                <li><a href="#" onClick="load_hosts();">Show Hosts</a></li>
-                <li><a href="#" onClick="load_envs();">Show Environments</a></li>
+
+   <div class="navbar navbar-inverse navbar-fixed-top">
+      <div class="navbar-inner">
+        <div class="container-fluid">
+          <a class="brand" href="#">Systats</a>
+          <div class="nav-collapse collapse">
+            <ul id="topnav" class="nav">
+
+            <!-- top header -->
+
             </ul>
+          </div>
         </div>
-        <div class="contentcontainer">
-            <p class="content"></p>
+      </div>
+    </div>
+
+
+
+        <div class="container-fluid">
+            <div class="row-fluid">
+                <div class="span2">
+                <!--Sidebar content-->
+                          <div class="well sidebar-nav">
+				    <ul id="sidenav" class="nav nav-list">
+				      <li class="nav-header">Hosts</li>
+				    </ul>
+			   </div><!--/.well -->
+
+
+                </div>
+                <div id="content" class="span10">
+                <!--Body content-->
+                </div>
+            </div>
         </div>
+
         <script>
             var hosts = {};
             // Get the host list from the hosts local endpoint
@@ -27,66 +57,35 @@
             $.getJSON('/envs.json', function(data) {
                 $.each(data, function(index, value) {
                     envs.push(value);
+                    $( '#topnav' ).append( $( '<li>' ).append(
+                        '<a href="#" onClick="load_hosts(\''+value+'\')">'+value+'</a>'));
                 });
             });
-
-            $( '.contentcontainer' ).fadeIn();
-
-            load_envs = function() {
-                $( '.contentcontainer' ).hide();
-                $( '.content' ).remove();
-                $( '.contentcontainer' ).append( $('<p class="content"></p>'));
-                $.each(envs, function(index, value) {
-                    $( '.content' ).append( $( '<li>' ).append(
-                        '<a href="#" onClick="show_env_hosts(\''+value+'\')">'+value+'</a>'));
+            
+            function load_hosts(env) {
+                $("#sidenav").empty();
+                $("#sidenav").append( $('<li class="nav-header">Hosts</li>'));
+                $.each(hosts, function(host, hostenv) {
+                    if (hostenv == env) {
+                        $("#sidenav").append( '<li><a href="#" onClick="load_stats(\''+host+'\')">'+host+'</a></li>');
+                    };
                 });
-
-                $( '.contentcontainer' ).fadeIn();
             };
 
-            $( '.contentcontainer' ).fadeIn();
 
-            load_hosts = function() {
-                $( '.contentcontainer' ).hide();
-                $( '.content' ).remove();
-                $( '.contentcontainer' ).append( $('<p class="content"></p>'));
-                $.each(hosts, function(key, value) {
-                    $( '.content' ).append( $( '<li>' ).append(
-                        '<a href="#" onClick="load_stats(\''+key+'\')">'+key+' ('+value+')</a>'));
-                });
-
-                $( '.contentcontainer' ).fadeIn();
-            };
-
-            load_stats = function(host) {
-                $( '.contentcontainer' ).hide();
-                $( '.content' ).remove();
-                $( '.contentcontainer' ).append( $('<p class="content"></p>'));
-                $.getJSON('/host/' + host + '.json', function(data) {
+            function load_stats(host) {
+                var host_endpoint = '/host/' + host + '.json';
+                $("#content").empty();
+                $.getJSON(host_endpoint, function(data) {
                     $.each(data, function(key, value) {
-                        $( '.content' ).append('<div class="stat_'+key+'"><h2>'+key+'</h2></div>');
+                        $( '#content' ).append('<h2>'+key+'</h2>');
+                        $( '#content' ).append( $( '<ul id="stat_'+key+'"></ul>' ) );
                         $.each(value, function(ikey, ivalue) {
-
-                            $( '.stat_'+key ).append('<b>'+ikey+'</b>: '+ivalue+'<br/>');
-
+                          $( '#stat_'+key ).append('<li><b>'+ikey+'</b>: '+ivalue+'</li>');
                         });
                     });
                 });
-                $( '.contentcontainer' ).fadeIn();
-            };
-
-            show_env_hosts = function(env) {
-                $('.contentcontainer').hide();
-                $('.content').remove();
-                $('.contentcontainer').append('<ul class="content"></ul>');
-                $.each(hosts, function(key, value) {
-                    if (value == env) {
-                        $('.content').append(
-                            '<li><a href="#" onClick="load_stats(\''+key+'\')"><b>'+key+'</a></li>');
-                    }
-                });
-                $('.contentcontainer').fadeIn();
-            };
-        </script>
+           };
+    </script>
     </body>
 </html>
