@@ -56,7 +56,8 @@ class Router(object):
         """
         # If the path exists then pass control to the wsgi application
         if environ['PATH_INFO'] in self._rules.keys():
-            return self._rules[path]['app'].__call__(environ, start_response)
+            return self._rules[environ['PATH_INFO']]['app'].__call__(
+                environ, start_response)
 
         # If the path matches the regex then pass control to the wsgi app
         for uri, data in self._rules.items():
@@ -134,7 +135,7 @@ class BaseHandler(object):
         f.close()
         self.logger.info('Saved "%s" in cache.' % key)
 
-    def return_404(self, start_response,  msg="404 File Not Found"):
+    def return_404(self, start_response, msg="404 File Not Found"):
         """
         Shortcut for returning 404's.
         """
@@ -227,7 +228,7 @@ class QueryHostHandler(BaseHandler):
             data = self.get_from_cache(host, call_obj)
             json_data = json.loads(data)
 
-            start_response("202 OK", [("Content-Type", "application/json")])
+            start_response("200 OK", [("Content-Type", "application/json")])
             return json.dumps(json_data)
 
         return self.return_404(start_response)
