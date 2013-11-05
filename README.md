@@ -13,6 +13,9 @@ Single web front end for https://github.com/tbielawa/restfulstatsjson.
 * Ajaxy
 
 
+## Unittests
+Use *nosetests -v* from the main directory to execute unittests.
+
 ## Configuration
 Configuration of the server is done in JSON and is kept in the current directories config.json file.
 
