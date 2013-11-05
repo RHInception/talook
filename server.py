@@ -6,7 +6,13 @@ Self contained stats consumer.
 import datetime
 import os.path
 import re
-import json
+
+try:
+    import json
+except ImportError:
+    # Fallback for 2.5
+    from simplejson import json
+
 import urllib
 
 import wsgiref.util
