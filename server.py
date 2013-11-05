@@ -11,7 +11,7 @@ try:
     import json
 except ImportError:
     # Fallback for 2.5
-    from simplejson import json
+    import simplejson as json
 
 import urllib
 

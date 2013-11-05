@@ -2,7 +2,7 @@
 try:
     import json
 except ImportError:
-    from simplejson import json
+    import simplejson as json
 
 from . import TestCase
 from server import QueryHostHandler
