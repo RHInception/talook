@@ -6,7 +6,7 @@
 
     "endpoint": "http://%s:8888/stats.json",
     "templatedir": ".",
-    "cachedir": "./cache/",
+    "cachedir": "./cache",
     "cachetime": {"hours": 1},
     "logdir": "./logs",
     "staticdir": "./static"

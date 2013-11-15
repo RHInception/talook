@@ -12,13 +12,16 @@ Single web front end for https://github.com/tbielawa/restfulstatsjson.
 * JSON based configuration
 * host and environment REST endpoints
 * Ajaxy
+* Unit tested
 
 
 ## Unittests
 Use *nosetests -v* from the main directory to execute unittests.
 
 ## Configuration
-Configuration of the server is done in JSON and is kept in the current directories config.json file.
+Configuration of the server is done in JSON and is by default kept in the current directories config.json file.
+You can override the location by setting SYSTATS_CONFIG_FILE environment variable or using the -c/--config
+switch on the all in one server.
 
 | Name          | Type | Value                                         |
 |---------------|------|-----------------------------------------------|
@@ -41,11 +44,11 @@ Configuration of the server is done in JSON and is kept in the current directori
     },
 
     "endpoint": "http://%s:8888/stats.json",
-    "templatedir": "/srv/www/systats",
-    "cachedir": "/srv/www/systats/cache",
+    "templatedir": "/var/www/systats",
+    "cachedir": "/var/cache/systats/",
     "cachetime": {"hours": 1},
-    "logdir": "/var/logs/systats/static",
-    "staticdir": "/srv/www/systats"
+    "logdir": "/var/logs/systats/",
+    "staticdir": "/srv/www/systats/static/"
 }
 ```
 
@@ -79,4 +82,7 @@ There are two log file which are produced by a running instance.
 
 ### Simple
 1. Edit the configuration file
-2. python server.py
+2. python server.py --listen 0.0.0.0 --port 8008 --config ./config.json
+
+### In Apache
+**TODO**

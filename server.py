@@ -4,7 +4,7 @@ Self contained stats consumer.
 """
 
 import datetime
-import os.path
+import os
 import re
 
 try:
@@ -25,7 +25,7 @@ def create_logger(name, filename,
     Creates a logger instance.
     """
     logfile = os.path.sep.join([os.path.realpath(
-        json.load(open('config.json', 'r'))['logdir']),
+        json.load(open(os.environ['SYSTATS_CONFIG_FILE'], 'r'))['logdir']),
         filename])
     logger = logging.getLogger(name)
     logger.setLevel(logging.INFO)
@@ -81,13 +81,14 @@ class BaseHandler(object):
     """
     Base handler to be used for app endpoints.
     """
-    _conf = json.load(open('config.json', 'r'))
-    logger = create_logger('systats', 'systats_app.log')
 
     def __init__(self):
         """
         Creates a BaseHandler instance.
         """
+        self._conf = json.load(open(os.environ['SYSTATS_CONFIG_FILE'], 'r'))
+        self.logger = create_logger('systats', 'systats_app.log')
+
         self._template_path = os.path.sep.join([os.path.realpath(
             self._conf['templatedir']), 'templates'])
         self._cache_dir = os.path.realpath(self._conf['cachedir'])
@@ -360,6 +361,8 @@ if __name__ == "__main__":
     from optparse import OptionParser
 
     parser = OptionParser()
+    parser.add_option('-c', '--config', dest='config', default='config.json',
+                      help='Config file to read (Default: config.json')
     parser.add_option('-p', '--port', dest='port', default=8080,
                       help='Port to listen on. (Default: 8080)')
     parser.add_option(
@@ -368,6 +371,7 @@ if __name__ == "__main__":
 
     (options, args) = parser.parse_args()
 
+    os.environ['SYSTATS_CONFIG_FILE'] = options.config
     py_version = platform.python_version()
     try:
         # Fall back to old school container if on 2.4.x

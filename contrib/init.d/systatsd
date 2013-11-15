@@ -1,0 +1,74 @@
+#!/bin/bash
+#
+# chkconfig: - 20 80
+# /etc/rc.d/init.d/systatsd
+# description: System stats web ui
+# processname: systatsd
+# config: /etc/systats/config.json
+# pidfile: /var/run/systatsd.pid
+#
+#
+# Source function library
+
+. /etc/rc.d/init.d/functions
+
+app_name="systatsd"
+app=/usr/bin/systats-server
+OPTIONS="--listen 0.0.0.0 --port 8008 --config /etc/systats/config.json"
+
+pidfile="/var/run/systatsd.pid"
+
+RETVAL=0
+
+start() {
+        echo -n $"Starting $app_name: "
+
+        pgrep -f ${app} > /dev/null
+        RUNNING=$?
+        if [ $RUNNING -eq 0 ]; then     
+            echo "[FAILED]"
+            echo    
+            echo "Reason: ${app_name} is already running."
+            RETVAL=1
+            exit 1;
+        fi
+
+        daemon --user systatsd --pidfile=${pidfile} "${app} ${OPTIONS} &"
+        pgrep -f ${app} > ${pidfile}
+        echo
+        RETVAL=$?
+        [ $RETVAL -eq 0 ] && touch /var/lock/subsys/systatsd
+        
+}
+
+
+stop() {
+        echo -n $"Stopping $app_name: "
+        kill `cat ${pidfile}`
+
+        RETVAL=$?
+        echo
+        #[ $RETVAL = 0 ] && rm -f ${pidfile}
+        [ $RETVAL -eq 0 ] && rm -f /var/lock/subsys/systatsd
+}
+
+case "$1" in
+	start)
+	        start
+	;;
+	stop)
+	        stop
+	;;
+	status)
+         	status -p ${pidfile} $app
+                RETVAL=$?
+	;;
+	restart)
+	        stop
+	        start
+	;;
+	*)
+		echo "Usage: systatsd {start|stop|status|restart}"
+		exit 1
+	;;
+esac
