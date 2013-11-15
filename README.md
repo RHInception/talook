@@ -1,5 +1,5 @@
-# systats
-[![Build Status](https://api.travis-ci.org/ashcrow/systats.png)](https://travis-ci.org/ashcrow/systats/)
+# talook
+[![Build Status](https://api.travis-ci.org/ashcrow/talook.png)](https://travis-ci.org/ashcrow/talook/)
 
 Single web front end for https://github.com/tbielawa/restfulstatsjson.
 
@@ -20,7 +20,7 @@ Use *nosetests -v* from the main directory to execute unittests.
 
 ## Configuration
 Configuration of the server is done in JSON and is by default kept in the current directories config.json file.
-You can override the location by setting SYSTATS_CONFIG_FILE environment variable or using the -c/--config
+You can override the location by setting TALOOK_CONFIG_FILE environment variable or using the -c/--config
 switch on the all in one server.
 
 | Name          | Type | Value                                         |
@@ -44,11 +44,11 @@ switch on the all in one server.
     },
 
     "endpoint": "http://%s:8888/stats.json",
-    "templatedir": "/var/www/systats",
-    "cachedir": "/var/cache/systats/",
+    "templatedir": "/var/www/talook",
+    "cachedir": "/var/cache/talook/",
     "cachetime": {"hours": 1},
-    "logdir": "/var/logs/systats/",
-    "staticdir": "/srv/www/systats/static/"
+    "logdir": "/var/logs/talook/",
+    "staticdir": "/srv/www/talook/static/"
 }
 ```
 
@@ -74,8 +74,8 @@ Returns a static file from the static directory.
 ## Logging
 There are two log file which are produced by a running instance.
 
-* **systats_access.log**: Access log similar to apache's access log.
-* **systats_app.log**: Application level logging which logs some logic results.
+* **talook_access.log**: Access log similar to apache's access log.
+* **talook_app.log**: Application level logging which logs some logic results.
 
 
 ## Running

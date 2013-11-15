@@ -1,10 +1,10 @@
-Name:           systats
+Name:           talook
 Version:        1.0.0
 Release:        1%{?dist}
 Summary:        Single web front end for restfulstatsjson
 
 License:        MIT
-URL:            https://github.com/ashcrow/systats
+URL:            https://github.com/ashcrow/talook
 Source0:        %{name}-%{version}.tar.gz
 
 BuildArch:      noarch
@@ -32,10 +32,10 @@ fi
 
 %build
 # Setup the default configuration
-%{__sed} -i 's|"templatedir": "."|"templatedir": "/var/www/systats/"|' config.json
-%{__sed} -i 's|"staticdir": "./static"|"staticdir": "/var/www/systats/static/"|' config.json
-%{__sed} -i 's|"cachedir": "./cache"|"cachedir": "/var/cache/systats/"|' config.json
-%{__sed} -i 's|"logdir": "./logs"|"logdir": "/var/log/systats/"|' config.json
+%{__sed} -i 's|"templatedir": "."|"templatedir": "/var/www/talook/"|' config.json
+%{__sed} -i 's|"staticdir": "./static"|"staticdir": "/var/www/talook/static/"|' config.json
+%{__sed} -i 's|"cachedir": "./cache"|"cachedir": "/var/cache/talook/"|' config.json
+%{__sed} -i 's|"logdir": "./logs"|"logdir": "/var/log/talook/"|' config.json
 
 %install
 rm -rf $RPM_BUILD_ROOT

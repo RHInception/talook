@@ -1,22 +1,22 @@
 #!/bin/bash
 #
 # chkconfig: - 20 80
-# /etc/rc.d/init.d/systatsd
+# /etc/rc.d/init.d/talookd
 # description: System stats web ui
-# processname: systatsd
-# config: /etc/systats/config.json
-# pidfile: /var/run/systatsd.pid
+# processname: talookd
+# config: /etc/talook/config.json
+# pidfile: /var/run/talookd.pid
 #
 #
 # Source function library
 
 . /etc/rc.d/init.d/functions
 
-app_name="systatsd"
-app=/usr/bin/systats-server
-OPTIONS="--listen 0.0.0.0 --port 8008 --config /etc/systats/config.json"
+app_name="talookd"
+app=/usr/bin/talook-server
+OPTIONS="--listen 0.0.0.0 --port 8008 --config /etc/talook/config.json"
 
-pidfile="/var/run/systatsd.pid"
+pidfile="/var/run/talookd.pid"
 
 RETVAL=0
 
@@ -33,11 +33,11 @@ start() {
             exit 1;
         fi
 
-        daemon --user systatsd --pidfile=${pidfile} "${app} ${OPTIONS} &"
+        daemon --user talookd --pidfile=${pidfile} "${app} ${OPTIONS} &"
         pgrep -f ${app} > ${pidfile}
         RETVAL=$?
         echo
-        [ $RETVAL -eq 0 ] && touch /var/lock/subsys/systatsd
+        [ $RETVAL -eq 0 ] && touch /var/lock/subsys/talookd
         
 }
 
@@ -49,7 +49,7 @@ stop() {
         RETVAL=$?
         echo
         #[ $RETVAL = 0 ] && rm -f ${pidfile}
-        [ $RETVAL -eq 0 ] && rm -f /var/lock/subsys/systatsd
+        [ $RETVAL -eq 0 ] && rm -f /var/lock/subsys/talookd
 }
 
 case "$1" in
@@ -68,7 +68,7 @@ case "$1" in
 	        start
 	;;
 	*)
-		echo "Usage: systatsd {start|stop|status|restart}"
+		echo "Usage: talookd {start|stop|status|restart}"
 		exit 1
 	;;
 esac

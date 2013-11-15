@@ -25,7 +25,7 @@ def create_logger(name, filename,
     Creates a logger instance.
     """
     logfile = os.path.sep.join([os.path.realpath(
-        json.load(open(os.environ['SYSTATS_CONFIG_FILE'], 'r'))['logdir']),
+        json.load(open(os.environ['TALOOK_CONFIG_FILE'], 'r'))['logdir']),
         filename])
     logger = logging.getLogger(name)
     logger.setLevel(logging.INFO)
@@ -86,8 +86,8 @@ class BaseHandler(object):
         """
         Creates a BaseHandler instance.
         """
-        self._conf = json.load(open(os.environ['SYSTATS_CONFIG_FILE'], 'r'))
-        self.logger = create_logger('systats', 'systats_app.log')
+        self._conf = json.load(open(os.environ['TALOOK_CONFIG_FILE'], 'r'))
+        self.logger = create_logger('talook', 'talook_app.log')
 
         self._template_path = os.path.sep.join([os.path.realpath(
             self._conf['templatedir']), 'templates'])
@@ -188,7 +188,7 @@ class IndexHandler(BaseHandler):
         Handles the index page.
         """
         start_response("200 OK", [("Content-Type", "text/html")])
-        return self.render_template('base.html', title='Systats')
+        return self.render_template('base.html', title='Talook')
 
 
 class ListHostsHandler(BaseHandler):
@@ -219,7 +219,7 @@ class ListEnvsHandler(BaseHandler):
 
 class QueryHostHandler(BaseHandler):
     """
-    Host stats page.
+    talook page.
     """
 
     def __call__(self, environ, start_response, host):
@@ -259,9 +259,9 @@ def run_server(host, port):
     from wsgiref.simple_server import make_server, WSGIRequestHandler
 
     logger = create_logger(
-        'systats_access', 'systats_access.log', '%(message)s')
+        'talook_access', 'talook_access.log', '%(message)s')
 
-    class SystatsHandler(WSGIRequestHandler):
+    class TalookHandler(WSGIRequestHandler):
 
         def log_message(self, format, *args):
             logger.info("%s - - [%s] %s" % (
@@ -273,7 +273,7 @@ def run_server(host, port):
 
     httpd = make_server(
         host, int(port), application,
-        handler_class=SystatsHandler)
+        handler_class=TalookHandler)
     print "server listening on http://%s:%s" % (host, port)
     httpd.serve_forever()
 
@@ -371,7 +371,7 @@ if __name__ == "__main__":
 
     (options, args) = parser.parse_args()
 
-    os.environ['SYSTATS_CONFIG_FILE'] = options.config
+    os.environ['TALOOK_CONFIG_FILE'] = options.config
     py_version = platform.python_version()
     try:
         # Fall back to old school container if on 2.4.x
