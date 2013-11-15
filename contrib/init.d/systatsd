@@ -35,8 +35,8 @@ start() {
 
         daemon --user systatsd --pidfile=${pidfile} "${app} ${OPTIONS} &"
         pgrep -f ${app} > ${pidfile}
-        echo
         RETVAL=$?
+        echo
         [ $RETVAL -eq 0 ] && touch /var/lock/subsys/systatsd
         
 }
