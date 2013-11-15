@@ -1,4 +1,5 @@
 # systats
+[![Build Status](https://api.travis-ci.org/ashcrow/systats.png)](https://travis-ci.org/ashcrow/systats/)
 
 Single web front end for https://github.com/tbielawa/restfulstatsjson.
 
