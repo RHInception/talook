@@ -4,8 +4,8 @@ Single web front end for https://github.com/tbielawa/restfulstatsjson.
 
 
 ## Features
-* Only requires Python (w/ simplejson if 2.5)
-* Python 2.5+ compatible
+* Only requires Python (w/ simplejson if 2.4 or 2.5)
+* Python 2.4+ compatible
 * Simple filesystem based caching
 * Access and application logging
 * JSON based configuration

@@ -1,7 +1,7 @@
 #!/usr/bin/env python2
-
-# TODO: Document and test me!!!
-
+"""
+Old school container to serve with in the case of python 2.4.x.
+"""
 
 import urllib
 
@@ -16,6 +16,9 @@ def create_wsgi_wrapper(wsgi_app):
     class WSGIWrapperHandler(BaseHTTPRequestHandler):
 
         def start_response(self, status, headers):
+            """
+            A fake WSGI start_response method.
+            """
             # Handle status info
             # TODO: Handle network errors better.
             status_data = status.split(' ')
@@ -29,10 +32,16 @@ def create_wsgi_wrapper(wsgi_app):
             self.end_headers()
 
         def handle(self):
+            """
+            Overrides handle so that the environ is set.
+            """
             self.environ = self.server._environ.copy()
             BaseHTTPRequestHandler.handle(self)
 
         def do_GET(self):
+            """
+            Since we only do GET we only need to define do_GET.
+            """
             if '?' in self.path:
                 path, query = self.path.split('?', 1)
             else:
@@ -53,6 +62,9 @@ class WSGILiteServer(HTTPServer):
     """
 
     def __init__(self, *args, **kwargs):
+        """
+        Creates an instance of a fake WSGI server.
+        """
         HTTPServer.__init__(self, *args, **kwargs)
         self._environ = {
             'SERVER_NAME': self.server_name,
@@ -62,13 +74,17 @@ class WSGILiteServer(HTTPServer):
         }
 
 
-def main():
+def run_old_server(host, port):
+    """
+    Main function.
+    """
     # This is where you import your app
     from server import make_app
     app = make_app()
-    server = WSGILiteServer(('0.0.0.0', 8000), create_wsgi_wrapper(app))
+    server = WSGILiteServer((host, port), create_wsgi_wrapper(app))
+    print "server listening on http://%s:%s" % (host, port)
     server.serve_forever()
 
 
 if __name__ == '__main__':
-    main()
+    run_old_server()

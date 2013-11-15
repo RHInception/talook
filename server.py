@@ -10,12 +10,10 @@ import re
 try:
     import json
 except ImportError:
-    # Fallback for 2.5
+    # Fallback for 2.4 and 2.5
     import simplejson as json
 
 import urllib
-
-import wsgiref.util
 
 import logging
 import logging.handlers
@@ -253,10 +251,34 @@ def make_app():
     })
 
 
-def run_server():
+def run_server(host, port):
     """
     If the server is called directly then serve via wsgiref.
     """
+    from wsgiref.simple_server import make_server, WSGIRequestHandler
+
+    logger = create_logger(
+        'systats_access', 'systats_access.log', '%(message)s')
+
+    class SystatsHandler(WSGIRequestHandler):
+
+        def log_message(self, format, *args):
+            logger.info("%s - - [%s] %s" % (
+                self.address_string(),
+                self.log_date_time_string(),
+                format % args))
+
+    application = make_app()
+
+    httpd = make_server(
+        host, int(port), application,
+        handler_class=SystatsHandler)
+    print "server listening on http://%s:%s" % (host, port)
+    httpd.serve_forever()
+
+
+if __name__ == "__main__":
+    import platform
     # Using optparse since argparse is not available in 2.5
     from optparse import OptionParser
 
@@ -269,32 +291,18 @@ def run_server():
 
     (options, args) = parser.parse_args()
 
+    py_version = platform.python_version()
     try:
-        from wsgiref.simple_server import make_server, WSGIRequestHandler
-
-        logger = create_logger(
-            'systats_access', 'systats_access.log', '%(message)s')
-
-        class SystatsHandler(WSGIRequestHandler):
-
-            def log_message(self, format, *args):
-                logger.info("%s - - [%s] %s" % (
-                    self.address_string(),
-                    self.log_date_time_string(),
-                    format % args))
-
-        application = make_app()
-
-        httpd = make_server(
-            options.listen, int(options.port), application,
-            handler_class=SystatsHandler)
-        print "server listening on http://%s:%s" % (
-            options.listen, options.port)
-        httpd.serve_forever()
+        # Fall back to old school container if on 2.4.x
+        if py_version >= '2.4.0' and py_version < '2.5.0':
+            from oldserver import run_old_server
+            run_old_server(options.listen, options.port)
+        # Else use the builtin wsgi container
+        elif py_version >= '2.5.0':
+            run_server(options.listen, options.port)
+        else:
+            print 'Untested Python version in use: %s' % py_version
+            raise SystemExit(1)
     except KeyboardInterrupt:
         print "shutting down..."
         raise SystemExit(0)
-
-
-if __name__ == "__main__":
-    run_server()
