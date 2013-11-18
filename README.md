@@ -1,7 +1,7 @@
 # talook
 [![Build Status](https://api.travis-ci.org/ashcrow/talook.png)](https://travis-ci.org/ashcrow/talook/)
 
-Single web front end for https://github.com/tbielawa/restfulstatsjson.
+Single web front end for [jsonstats](https://github.com/tbielawa/jsonstats).
 
 
 ## Features
