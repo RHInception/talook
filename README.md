@@ -85,4 +85,16 @@ There are two log file which are produced by a running instance.
 2. python server.py --listen 0.0.0.0 --port 8008 --config ./config.json
 
 ### In Apache
-**TODO**
+mod_wsgi can be used with Apache to mount talook. There are example files
+in contrib/apache/ which can help set an instance up. Note that the wsgi
+process owner will need to be able to write and/or read from the locations
+listed in the config.json just like in the standalone server!
+
+* **talook.wsgi**: The WSGI file that mod_wsgi will use.
+* **talook.conf**: The configuration file which mounts the WSGI application.
+
+#### SELinux
+One or both may be needed when using mod_wsgi on Apache if SELinux is enabled.
+
+* setsebool -P httpd_can_network_connect 1
+* semanage port -a -t http_port_t -p tcp 8888
