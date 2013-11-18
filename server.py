@@ -239,19 +239,6 @@ class QueryHostHandler(BaseHandler):
         return self.return_404(start_response)
 
 
-def make_app():
-    """
-    Creates a WSGI application for use.
-    """
-    return Router({
-        '^/$': IndexHandler(),
-        '/hosts.json$': ListHostsHandler(),
-        '/envs.json$': ListEnvsHandler(),
-        '/host/(?P<host>[\w\.]*).json?$': QueryHostHandler(),
-        '/static/(?P<filename>[\w\-\.]*$)': StaticFileHandler(),
-    })
-
-
 def run_server(host, port):
     """
     If the server is called directly then serve via wsgiref.
@@ -363,6 +350,19 @@ def run_old_server(host, port):
     server = WSGILiteServer((host, port), create_wsgi_wrapper(make_app()))
     print "server listening on http://%s:%s" % (host, port)
     server.serve_forever()
+
+
+def make_app():
+    """
+    Creates a WSGI application for use.
+    """
+    return Router({
+        '^/$': IndexHandler(),
+        '/hosts.json$': ListHostsHandler(),
+        '/envs.json$': ListEnvsHandler(),
+        '/host/(?P<host>[\w\.]*).json?$': QueryHostHandler(),
+        '/static/(?P<filename>[\w\-\.]*$)': StaticFileHandler(),
+    })
 
 
 if __name__ == "__main__":
