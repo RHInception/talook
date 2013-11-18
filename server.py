@@ -291,6 +291,9 @@ def run_old_server(host, port):
         Wraps a WSGI application for use.
         """
 
+        logger = create_logger(
+            'talook_access', 'talook_access.log', '%(message)s')
+
         class WSGIWrapperHandler(BaseHTTPRequestHandler):
 
             def start_response(self, status, headers):
@@ -308,6 +311,13 @@ def run_old_server(host, port):
                 for name, value in headers:
                     self.send_header(name, value)
                 self.end_headers()
+
+            # FIXME: This is being shared in another handler. Mixin?
+            def log_message(self, format, *args):
+                logger.info("%s - - [%s] %s" % (
+                    self.address_string(),
+                    self.log_date_time_string(),
+                    format % args))
 
             def handle(self):
                 """
