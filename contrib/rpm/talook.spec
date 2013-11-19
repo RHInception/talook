@@ -1,6 +1,6 @@
 Name:           talook
 Version:        1.0.0
-Release:        2%{?dist}
+Release:        3%{?dist}
 Summary:        Single web front end for restfulstatsjson
 
 License:        MIT
@@ -57,13 +57,16 @@ cp contrib/init.d/%{name}d $RPM_BUILD_ROOT/%{_initddir}/
 %attr(0755, root, root) %{_bindir}/%{name}-server
 %dir %{_sysconfdir}/%{name}/
 %config(noreplace) %{_sysconfdir}/%{name}/config.json
-%dir %{_localstatedir}/cache/%{name}/
+%attr(-, %{name}d, %{name}d) %dir %{_localstatedir}/cache/%{name}/
 %attr(-, %{name}d, %{name}d) %dir %{_localstatedir}/log/%{name}/
 %dir %{_localstatedir}/www/%{name}/
 %{_localstatedir}/www/*
 %attr(0755, -, -) %{_initddir}/%{name}d
 
 %changelog
+* Tue Nov 19 2013 Steve Milner <stevem@gnulinux.net>- 1.0.0-3
+- Fixed cache directory permission
+
 * Tue Nov 19 2013 Steve Milner <stevem@gnulinux.net>- 1.0.0-2
 - Fixed sbin issues when installing on RHEL6
 
