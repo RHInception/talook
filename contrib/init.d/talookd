@@ -14,7 +14,7 @@
 
 app_name="talookd"
 app=/usr/bin/talook-server
-OPTIONS="--listen 0.0.0.0 --port 8008 --config /etc/talook/config.json"
+OPTIONS="--listen 0.0.0.0 --port 8080 --config /etc/talook/config.json"
 
 pidfile="/var/run/talookd.pid"
 
