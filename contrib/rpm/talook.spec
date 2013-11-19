@@ -1,6 +1,6 @@
 Name:           talook
 Version:        1.0.0
-Release:        1%{?dist}
+Release:        2%{?dist}
 Summary:        Single web front end for restfulstatsjson
 
 License:        MIT
@@ -21,12 +21,12 @@ Single web front end for https://github.com/tbielawa/restfulstatsjson.
 %{_sbindir}/useradd --no-create-home --shell %{_sbindir}/nologin --system %{name}d
 
 %post
-%{_sbindir}/chkconfig --add %{name}d
+/sbin/chkconfig --add %{name}d
 
 %preun
 if [ $1 = 0 ]; then
-    %{_sbindir}/service %{name}d stop >/dev/null 2>&1
-    %{_sbindir}/chkconfig --del %{name}d
+    /sbin/service %{name}d stop >/dev/null 2>&1
+    /sbin/chkconfig --del %{name}d
     %{_sbindir}/userdel -r %{name}d > /dev/null 2>&1
 fi
 
@@ -64,5 +64,8 @@ cp contrib/init.d/%{name}d $RPM_BUILD_ROOT/%{_initddir}/
 %attr(0755, -, -) %{_initddir}/%{name}d
 
 %changelog
+* Tue Nov 19 2013 Steve Milner <stevem@gnulinux.net>- 1.0.0-2
+- Fixed sbin issues when installing on RHEL6
+
 * Fri Nov 15 2013 Steve Milner <stevem@gnulinux.net>- 1.0.0-1
 - Initial spec
