@@ -18,7 +18,7 @@ Single web front end for https://github.com/tbielawa/restfulstatsjson.
 %setup -q
 
 %pre
-%{_sbindir}/useradd --no-create-home --shell %{_sbindir}/nologin --system %{name}d
+getent passwd %{name}d >/dev/null 2>&1 || %{_sbindir}/useradd --no-create-home --shell %{_sbindir}/nologin --system %{name}d
 
 %post
 /sbin/chkconfig --add %{name}d
