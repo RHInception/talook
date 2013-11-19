@@ -16,7 +16,7 @@ Single web front end for [jsonstats](https://github.com/tbielawa/jsonstats).
 
 
 ## Unittests
-Use *nosetests -v* from the main directory to execute unittests.
+Use *./setup.py test* from the main directory to execute unittests.
 
 ## Configuration
 Configuration of the server is done in JSON and is by default kept in the current directories config.json file.

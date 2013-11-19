@@ -1,0 +1,13 @@
+include AUTHORS
+include LICENSE
+include MANIFEST.in
+include README.md
+include config.json
+include server.py
+include setup.py
+recursive-include contrib *
+recursive-include logs *
+recursive-include cache *
+recursive-include static *
+recursive-include templates *
+recursive-include test *
