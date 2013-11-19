@@ -1,5 +1,6 @@
 
 import datetime
+import tempfile
 
 from . import TestCase
 from server import BaseHandler
@@ -55,3 +56,24 @@ class TestBaseHandler(TestCase):
         assert buffer['code'] == '404 File Not Found'
         assert buffer['headers'] == [('Content-Type', 'text/html')]
         assert result == '404 File Not Found'
+
+    def test_save_to_cache(self):
+        """
+        Verify we are able to save cache via BaseHandler.save_to_cache()
+        """
+        self.instance._cache_dir = tempfile.gettempdir()
+        assert self.instance.save_to_cache('test', '{"test": "data"}') is None
+
+    def test_get_from_cache(self):
+        """
+        Verify BaseHandler.get_from_cache() returns proper data.
+        """
+        nodata = lambda: '["NOTHING"]'
+
+        self.instance._cache_dir = tempfile.gettempdir()
+        data = '{"test": "data"}'
+        assert self.instance.save_to_cache('test', data) is None
+        assert data == self.instance.get_from_cache('test', nodata)
+
+        assert '["NOTHING"]' == self.instance.get_from_cache(
+            'notavailable', nodata)

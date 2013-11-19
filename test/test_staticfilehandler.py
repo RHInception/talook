@@ -41,3 +41,11 @@ class TestStaticFileHandler(TestCase):
         assert buffer['headers'] == [(
             "Content-Type", "application/javascript")]
         assert type(result2) == str
+
+        result_404 = combine_result(
+            self.instance.__call__(
+                environ, start_response, 'nothing_here'))
+        assert buffer['code'] == '404 File Not Found'
+        assert buffer['headers'] == [(
+            "Content-Type", "text/html")]
+        assert type(result_404) == str
