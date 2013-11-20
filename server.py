@@ -227,8 +227,9 @@ class QueryHostHandler(BaseHandler):
         Handles the REST API proxy between restfulstatsjson and the web ui.
         """
         if host in self._conf['hosts']:
-            call_obj = lambda: str(urllib.urlopen(
-                self._conf['endpoint'] % host).read())
+            endpoint = self._conf['endpoint'] % host
+            self.logger.info('Requesting data from %s' % endpoint)
+            call_obj = lambda: str(urllib.urlopen(endpoint).read())
 
             data = self.get_from_cache(host, call_obj)
             json_data = json.loads(data)
@@ -360,7 +361,7 @@ def make_app():
         '^/$': IndexHandler(),
         '/hosts.json$': ListHostsHandler(),
         '/envs.json$': ListEnvsHandler(),
-        '/host/(?P<host>[\w\.]*).json?$': QueryHostHandler(),
+        '/host/(?P<host>[\w\.\-]*).json?$': QueryHostHandler(),
         '/static/(?P<filename>[\w\-\.]*$)': StaticFileHandler(),
     })
 

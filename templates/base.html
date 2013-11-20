@@ -28,17 +28,23 @@
 
         <div class="container-fluid">
             <div class="row-fluid">
-                <div class="span2">
+                <div class="span3">
                 <!--Sidebar content-->
                           <div class="well sidebar-nav">
 				    <ul id="sidenav" class="nav nav-list">
 				      <li class="nav-header">Hosts</li>
 				    </ul>
-			   </div><!--/.well -->
 
+                          </div>
 
                 </div>
-                <div id="content" class="span10">
+
+                <div class="span9">
+                      <div id="anchors" class="well hide"></div>
+
+                </div>
+
+                <div id="content" class="span9">
                 <!--Body content-->
                 </div>
             </div>
@@ -56,9 +62,12 @@
             // Get the envs list from the envs local endpoint
             $.getJSON('/envs.json', function(data) {
                 $.each(data, function(index, value) {
-                    envs.push(value);
-                    $( '#topnav' ).append( $( '<li>' ).append(
-                        '<a href="#" onClick="load_hosts(\''+value+'\')">'+value+'</a>'));
+                    // only add an env name if it isn't already in the list
+                    if (envs.indexOf(value) == -1) {
+                        envs.push(value);
+                        $( '#topnav' ).append( $( '<li>' ).append(
+                            '<a href="#" onClick="load_hosts(\''+value+'\')">'+value+'</a>'));
+                    }
                 });
             });
             
@@ -72,19 +81,22 @@
                 });
             };
 
-
             function load_stats(host) {
                 var host_endpoint = '/host/' + host + '.json';
                 $("#content").empty();
+                $("#anchors").empty();
+                $("#anchors").append('<h4>Stats for '+host+'</h4>');
                 $.getJSON(host_endpoint, function(data) {
                     $.each(data, function(key, value) {
-                        $( '#content' ).append('<h2>'+key+'</h2>');
+                        $( '#content' ).append('<a id="'+key+'"></a><h2>'+key+'</h2>');
+                        $( '#anchors' ).append('<a href="#'+key+'">'+key+'</a>&nbsp;');
                         $( '#content' ).append( $( '<ul id="stat_'+key+'"></ul>' ) );
                         $.each(value, function(ikey, ivalue) {
                           $( '#stat_'+key ).append('<li><b>'+ikey+'</b>: '+ivalue+'</li>');
                         });
                     });
                 });
+                $("#anchors").show();
            };
     </script>
     </body>
