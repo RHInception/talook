@@ -1,6 +1,6 @@
 Name:           talook
 Version:        1.0.0
-Release:        3%{?dist}
+Release:        4%{?dist}
 Summary:        Single web front end for restfulstatsjson
 
 License:        MIT
@@ -64,6 +64,9 @@ cp contrib/init.d/%{name}d $RPM_BUILD_ROOT/%{_initddir}/
 %attr(0755, -, -) %{_initddir}/%{name}d
 
 %changelog
+* Wed Nov 20 2013 Steve Milner <stevem@gnulinux.net>- 1.0.0-4
+- Changed default config.json data
+
 * Tue Nov 19 2013 Steve Milner <stevem@gnulinux.net>- 1.0.0-3
 - Fixed cache directory permission
 

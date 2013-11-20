@@ -4,7 +4,7 @@
         "127.0.0.1": "qa"
     },
 
-    "endpoint": "http://%s:8888/stats.json",
+    "endpoint": "http://%s:8008/",
     "templatedir": ".",
     "cachedir": "./cache",
     "cachetime": {"hours": 1},
