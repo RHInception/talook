@@ -82,7 +82,24 @@ There are two log file which are produced by a running instance.
 
 ### Simple
 1. Edit the configuration file
-2. python server.py --listen 0.0.0.0 --port 8008 --config ./config.json
+2. Check to see what options you want to use with --help
+3. python server.py --listen 0.0.0.0 --port 8008 --config ./config.json
+
+#### Standalone Server Options
+```
+$ ./server.py --help
+Usage: server.py [options]
+
+Options:
+  -h, --help            show this help message and exit
+  -c CONFIG, --config=CONFIG
+                        Config file to read (Default: config.json
+  -p PORT, --port=PORT  Port to listen on. (Default: 8080)
+  -l LISTEN, --listen=LISTEN
+                        Address to listen on. (Default: 0.0.0.0)
+  -r, --reload          Enable reloading on config change. (Default: False)
+```
+
 
 ### In Apache
 mod_wsgi can be used with Apache to mount talook. There are example files
