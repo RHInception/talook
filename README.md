@@ -44,7 +44,7 @@ switch on the all in one server.
         "127.0.0.1": "dev"
     },
 
-    "endpoint": "http://%s:8888/stats.json",
+    "endpoint": "http://%s:8008/",
     "templatedir": "/var/www/talook",
     "cachedir": "/var/cache/talook/",
     "cachetime": {"hours": 1},
