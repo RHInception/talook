@@ -13,6 +13,7 @@ Single web front end for [jsonstats](https://github.com/tbielawa/jsonstats).
 * host and environment REST endpoints
 * Ajaxy
 * Unit tested
+* Optional reload of standalone server on configuration update
 
 
 ## Unittests
@@ -102,7 +103,9 @@ Options:
 
 
 ### In Apache
-mod_wsgi can be used with Apache to mount talook. There are example files
+mod_wsgi can be used with Apache to mount talook. While the standalone server
+will work just fine for some environments it's important to remember it's 
+single threaded and won't perform well under some conditions. There are example files
 in contrib/apache/ which can help set an instance up. Note that the wsgi
 process owner will need to be able to write and/or read from the locations
 listed in the config.json just like in the standalone server!
