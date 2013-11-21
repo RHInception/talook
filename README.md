@@ -117,4 +117,4 @@ listed in the config.json just like in the standalone server!
 One or both may be needed when using mod_wsgi on Apache if SELinux is enabled.
 
 * setsebool -P httpd_can_network_connect 1
-* semanage port -a -t http_port_t -p tcp 8888
+* semanage port -a -t http_port_t -p tcp 8008
