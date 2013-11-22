@@ -1,10 +1,11 @@
 language: python
 python:
-    - "2.5"
+    - "2.6"
     - "2.7"
 install:
     - "pip install pep8 nose simplejson"
 script:
     - "pep8 server.py"
-    - "nosetests -v"
-email: false
+    - "./setup.py test"
+notifications:
+    email: false
