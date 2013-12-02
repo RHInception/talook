@@ -118,3 +118,15 @@ One or both may be needed when using mod_wsgi on Apache if SELinux is enabled.
 
 * setsebool -P httpd_can_network_connect 1
 * semanage port -a -t http_port_t -p tcp 8008
+
+
+### Packaging
+
+#### RPM
+To generate an RPM issue the following command:
+
+```
+$ make rpm
+```
+
+You'll then be able to install and run talook as a system service.
