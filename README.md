@@ -1,5 +1,5 @@
 # talook
-[![Build Status](https://api.travis-ci.org/ashcrow/talook.png)](https://travis-ci.org/ashcrow/talook/)
+[![Build Status](https://api.travis-ci.org/RHInception/talook.png)](https://travis-ci.org/RHInception/talook/)
 
 Single web front end for [jsonstats](https://github.com/tbielawa/jsonstats).
 
