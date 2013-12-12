@@ -458,7 +458,7 @@ if __name__ == "__main__":
     parser = OptionParser()
     parser.add_option('-c', '--config', dest='config', default='config.json',
                       help='Config file to read (Default: config.json')
-    parser.add_option('-p', '--port', dest='port', default=8080,
+    parser.add_option('-p', '--port', dest='port', default=8080, type='int'
                       help='Port to listen on. (Default: 8080)')
     parser.add_option(
         '-l', '--listen', dest='listen', default='0.0.0.0',
