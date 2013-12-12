@@ -409,6 +409,7 @@ class ConfigPoller(ServerThread):
 
     def start(self, app):
         self.app = app
+        self.logger = create_logger('talook', 'talook_app.log')
         threading.Thread.start(self)
 
     def terminate(self):
@@ -426,7 +427,11 @@ class ConfigPoller(ServerThread):
             current_mtime = os.stat(os.environ['TALOOK_CONFIG_FILE']).st_mtime
             if mtime != current_mtime:
                 mtime = current_mtime
-                self.app.reload()
+                try:
+                    self.app.reload()
+                    self.logger.info('Config has successfully reloaded.')
+                except ValueError:
+                    self.logger.error('JSON is invalid. Config was not reloaded.')
             time.sleep(1)
         raise SystemExit(0)
 
