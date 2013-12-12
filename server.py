@@ -360,7 +360,7 @@ def create_old_server(host, port):
             }
 
     app = make_app()
-    return (WSGILiteServer((host, port), create_wsgi_wrapper(app)), app)
+    return (WSGILiteServer((host, int(port)), create_wsgi_wrapper(app)), app)
 
 
 class ServerThread(threading.Thread):
