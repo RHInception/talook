@@ -5,8 +5,8 @@ BuildRoot: %{_tmppath}/%{name}-%{version}-%{release}-buildroot
 
 
 Name:           talook
-Version:        1.0.0
-Release:        4%{?dist}
+Version:        1.0.1
+Release:        1%{?dist}
 Summary:        Single web front end for restfulstatsjson
 Group:          System Environment/Daemons
 
@@ -50,6 +50,7 @@ rm -rf $RPM_BUILD_ROOT
 %install
 mkdir -p $RPM_BUILD_ROOT%{_bindir}/
 mkdir -p $RPM_BUILD_ROOT%{_sysconfdir}/%{name}/
+mkdir -p $RPM_BUILD_ROOT%{_sysconfdir}/sysconfig/
 mkdir -p $RPM_BUILD_ROOT%{_localstatedir}/cache/%{name}/
 mkdir -p $RPM_BUILD_ROOT%{_localstatedir}/log/%{name}/
 mkdir -p $RPM_BUILD_ROOT%{_localstatedir}/www/%{name}/
@@ -59,6 +60,9 @@ cp server.py $RPM_BUILD_ROOT/%{_bindir}/%{name}-server
 cp config.json $RPM_BUILD_ROOT/%{_sysconfdir}/%{name}/
 cp -rf static templates $RPM_BUILD_ROOT/%{_localstatedir}/www/%{name}/ 
 cp contrib/init.d/%{name}d $RPM_BUILD_ROOT/%{_initrddir}/
+python server.py --help | sed -e "s|^|# |" > $RPM_BUILD_ROOT%{_sysconfdir}/sysconfig/%{name}d.conf
+echo "OPTIONS=\"--listen 0.0.0.0 --port 8080 --config /etc/talook/config.json\"" >> $RPM_BUILD_ROOT%{_sysconfdir}/sysconfig/%{name}d.conf
+
 
 %files
 %defattr(0644, root, root, -)
@@ -66,12 +70,16 @@ cp contrib/init.d/%{name}d $RPM_BUILD_ROOT/%{_initrddir}/
 %attr(0755, root, root) %{_bindir}/%{name}-server
 %attr(0755, root, root) %dir %{_sysconfdir}/%{name}/
 %config(noreplace) %{_sysconfdir}/%{name}/config.json
+%config(noreplace) %{_sysconfdir}/sysconfig/talookd.conf
 %attr(-, %{name}d, %{name}d) %dir %{_localstatedir}/cache/%{name}/
 %attr(-, %{name}d, %{name}d) %dir %{_localstatedir}/log/%{name}/
 %{_localstatedir}/www/*
 %attr(0755, -, -) %{_initrddir}/%{name}d
 
 %changelog
+* Wed Dec 12 2013 Steve Milner <stevem@gnulinux.net>- 1.0.1-1
+- Update for upstream release.
+
 * Wed Nov 20 2013 Steve Milner <stevem@gnulinux.net>- 1.0.0-4
 - Changed default config.json data
 

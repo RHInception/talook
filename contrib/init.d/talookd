@@ -16,6 +16,10 @@ app_name="talookd"
 app=/usr/bin/talook-server
 OPTIONS="--listen 0.0.0.0 --port 8080 --config /etc/talook/config.json"
 
+# If there is a sysconfig config then source it in and override OPTIONS
+SYSCONF_FILE=/etc/sysconfig/talookd.conf
+[ -f ${SYSCONF_FILE} ] && . ${SYSCONF_FILE}
+
 pidfile="/var/run/talookd.pid"
 
 RETVAL=0
