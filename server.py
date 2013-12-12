@@ -431,7 +431,8 @@ class ConfigPoller(ServerThread):
                     self.app.reload()
                     self.logger.info('Config has successfully reloaded.')
                 except ValueError:
-                    self.logger.error('JSON is invalid. Config was not reloaded.')
+                    self.logger.error(
+                        'JSON is invalid. Config was not reloaded.')
             time.sleep(1)
         raise SystemExit(0)
 
