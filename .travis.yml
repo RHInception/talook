@@ -6,6 +6,6 @@ install:
     - "pip install pep8 nose simplejson"
 script:
     - "pep8 server.py"
-    - "./setup.py test"
+    - "nosetests -v"
 notifications:
     email: false
