@@ -6,7 +6,7 @@ BuildRoot: %{_tmppath}/%{name}-%{version}-%{release}-buildroot
 
 Name:           talook
 Version:        1.0.1
-Release:        1%{?dist}
+Release:        2%{?dist}
 Summary:        Single web front end for restfulstatsjson
 Group:          System Environment/Daemons
 
@@ -71,12 +71,15 @@ echo "OPTIONS=\"--listen 0.0.0.0 --port 8080 --config /etc/talook/config.json\""
 %attr(0755, root, root) %dir %{_sysconfdir}/%{name}/
 %config(noreplace) %{_sysconfdir}/%{name}/config.json
 %config(noreplace) %{_sysconfdir}/sysconfig/talookd.conf
-%attr(-, %{name}d, %{name}d) %dir %{_localstatedir}/cache/%{name}/
-%attr(-, %{name}d, %{name}d) %dir %{_localstatedir}/log/%{name}/
+%attr(0755, %{name}d, %{name}d) %dir %{_localstatedir}/cache/%{name}/
+%attr(0755, %{name}d, %{name}d) %dir %{_localstatedir}/log/%{name}/
 %{_localstatedir}/www/*
 %attr(0755, -, -) %{_initrddir}/%{name}d
 
 %changelog
+* Wed Dec 13 2013 Steve Milner <stevem@gnulinux.net>- 1.0.1-2
+- Fix to handle directory permissions better.
+
 * Wed Dec 12 2013 Steve Milner <stevem@gnulinux.net>- 1.0.1-1
 - Update for upstream release.
 
