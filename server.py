@@ -450,7 +450,7 @@ def make_app():
     })
 
 
-if __name__ == "__main__":
+def main():
     import platform
     # Using optparse since argparse is not available in 2.5
     from optparse import OptionParser
@@ -458,7 +458,7 @@ if __name__ == "__main__":
     parser = OptionParser()
     parser.add_option('-c', '--config', dest='config', default='config.json',
                       help='Config file to read (Default: config.json')
-    parser.add_option('-p', '--port', dest='port', default=8080, type='int'
+    parser.add_option('-p', '--port', dest='port', default=8080, type='int',
                       help='Port to listen on. (Default: 8080)')
     parser.add_option(
         '-l', '--listen', dest='listen', default='0.0.0.0',
@@ -506,3 +506,7 @@ if __name__ == "__main__":
             raise SystemExit(0)
 
     raise SystemExit(0)
+
+
+if __name__ == "__main__":
+    main()
