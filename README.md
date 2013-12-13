@@ -1,7 +1,7 @@
 # talook
 [![Build Status](https://api.travis-ci.org/RHInception/talook.png)](https://travis-ci.org/RHInception/talook/)
 
-Single web front end for [jsonstats](https://github.com/tbielawa/jsonstats).
+Single web front end for [jsonstats](https://github.com/RHInception/jsonstats).
 
 
 ## Features
@@ -104,7 +104,7 @@ Options:
 
 ### In Apache
 mod_wsgi can be used with Apache to mount talook. While the standalone server
-will work just fine for some environments it's important to remember it's 
+will work just fine for some environments it's important to remember it's
 single threaded and won't perform well under some conditions. There are example files
 in contrib/apache/ which can help set an instance up. Note that the wsgi
 process owner will need to be able to write and/or read from the locations
