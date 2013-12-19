@@ -2,10 +2,10 @@
 <html lang="en">
     <head>
         <title>{{- title -}}</title>
-        <script src="/static/jquery-2.0.3.min.js"></script>
-        <script src="/static/bootstrap.min.js"></script>
-        <link href="/static/bootstrap.min.css" rel="stylesheet">
-        <link href="/static/style.css" rel="stylesheet">
+        <script src="static/jquery-2.0.3.min.js"></script>
+        <script src="static/bootstrap.min.js"></script>
+        <link href="static/bootstrap.min.css" rel="stylesheet">
+        <link href="static/style.css" rel="stylesheet">
     </head>
     <body>
 
@@ -53,14 +53,14 @@
         <script>
             var hosts = {};
             // Get the host list from the hosts local endpoint
-            $.getJSON('/hosts.json', function(data) {
+            $.getJSON('hosts.json', function(data) {
                 $.each(data, function(key, value) {
                     hosts[key] = value;
                 });
             });
             var envs = [];
             // Get the envs list from the envs local endpoint
-            $.getJSON('/envs.json', function(data) {
+            $.getJSON('envs.json', function(data) {
                 $.each(data, function(index, value) {
                     // only add an env name if it isn't already in the list
                     if (envs.indexOf(value) == -1) {
@@ -70,7 +70,7 @@
                     }
                 });
             });
-            
+
             function load_hosts(env) {
                 $("#sidenav").empty();
                 $("#sidenav").append( $('<li class="nav-header">Hosts</li>'));
@@ -82,7 +82,7 @@
             };
 
             function load_stats(host) {
-                var host_endpoint = '/host/' + host + '.json';
+                var host_endpoint = 'host/' + host + '.json';
                 $("#content").empty();
                 $("#anchors").empty();
                 $("#anchors").append('<h4>Stats for '+host+'</h4>');
