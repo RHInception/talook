@@ -10,7 +10,7 @@ setup(
     name="talook",
     version="1.0.1",
     author="Steve Milner",
-    url="https://github.com/ashcrow/talook",
+    url="https://github.com/RHInception/talook",
     license="MIT",
     zip_safe=False,
     test_suite='nose.collector'

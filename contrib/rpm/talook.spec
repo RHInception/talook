@@ -6,12 +6,12 @@ BuildRoot: %{_tmppath}/%{name}-%{version}-%{release}-buildroot
 
 Name:           talook
 Version:        1.0.1
-Release:        2%{?dist}
+Release:        3%{?dist}
 Summary:        Single web front end for restfulstatsjson
 Group:          System Environment/Daemons
 
 License:        MIT
-URL:            https://github.com/ashcrow/talook
+URL:            https://github.com/RHInception/talook
 Source0:        %{name}-%{version}.tar.gz
 
 BuildArch:      noarch
@@ -19,7 +19,7 @@ BuildArch:      noarch
 %{?rhl5:Requires: python-simplejson}
 
 %description
-Single web front end for https://github.com/tbielawa/restfulstatsjson.
+Single web front end for https://github.com/RHInception/talook.
 
 %prep
 %setup -q
@@ -58,7 +58,7 @@ mkdir -p $RPM_BUILD_ROOT%{_initrddir}/
 
 cp server.py $RPM_BUILD_ROOT/%{_bindir}/%{name}-server
 cp config.json $RPM_BUILD_ROOT/%{_sysconfdir}/%{name}/
-cp -rf static templates $RPM_BUILD_ROOT/%{_localstatedir}/www/%{name}/ 
+cp -rf static templates $RPM_BUILD_ROOT/%{_localstatedir}/www/%{name}/
 cp contrib/init.d/%{name}d $RPM_BUILD_ROOT/%{_initrddir}/
 python server.py --help | sed -e "s|^|# |" > $RPM_BUILD_ROOT%{_sysconfdir}/sysconfig/%{name}d.conf
 echo "OPTIONS=\"--listen 0.0.0.0 --port 8080 --config /etc/talook/config.json\"" >> $RPM_BUILD_ROOT%{_sysconfdir}/sysconfig/%{name}d.conf
@@ -77,6 +77,9 @@ echo "OPTIONS=\"--listen 0.0.0.0 --port 8080 --config /etc/talook/config.json\""
 %attr(0755, -, -) %{_initrddir}/%{name}d
 
 %changelog
+* Wed Jan  8 2014 Tim Bielawa <tbielawa@redhat.com> - 1.0.1-3
+- Use relative paths instead for site style
+
 * Wed Dec 13 2013 Steve Milner <stevem@gnulinux.net>- 1.0.1-2
 - Fix to handle directory permissions better.
 
