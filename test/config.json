@@ -1,0 +1,13 @@
+{
+    "hosts": {
+        "localhost": "prod",
+        "127.0.0.1": "qa"
+    },
+
+    "endpoint": "http://%s:8008/",
+    "templatedir": "./templates",
+    "cachedir": "./cache",
+    "cachetime": {"hours": 1},
+    "logdir": "./logs",
+    "staticdir": "./static"
+}
