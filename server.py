@@ -102,8 +102,16 @@ class BaseHandler(object):
         self._conf = json.load(open(os.environ['TALOOK_CONFIG_FILE'], 'r'))
         self.logger = create_logger('talook', 'talook_app.log')
 
-        self._template_path = os.path.sep.join([os.path.realpath(
-            self._conf['templatedir']), 'templates'])
+        template_path = os.path.realpath(self._conf['templatedir'])
+        if os.path.isdir(os.path.sep.join([template_path, 'templates'])):
+            self._template_path = os.path.sep.join([os.path.realpath(
+                self._conf['templatedir']), 'templates'])
+            self.logger.warn(
+                'Old style template directory has been deprecated and will be '
+                'rmeoved in a future release. Please define the full path '
+                'including the directory name. Using ' + self._template_path)
+        else:
+            self._template_path = template_path
         try:
             self._cache_dir = os.path.realpath(self._conf['cachedir'])
             self._cache_time = datetime.timedelta(**self._conf['cachetime'])

@@ -5,7 +5,7 @@
     },
 
     "endpoint": "http://%s:8008/",
-    "templatedir": ".",
+    "templatedir": "./templates",
     "logdir": "./logs",
     "staticdir": "./static"
 }

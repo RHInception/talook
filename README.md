@@ -28,7 +28,7 @@ switch on the all in one server.
 |---------------|------|-----------------------------------------------|
 | hosts         | dict | hostname: environment pairs                   |
 | endpoint      | str  | Endpoint url to pull json data from with a %s placeholder for hostname   |
-| templatedir   | str  | Directory which holds the templates directory |
+| templatedir   | str  | Full path to the templates directory. |
 | cachedir      | str  | Full path to the cache directory. If this is empty the cache is disabled |
 | cachetime     | dict | kwargs for Python's datetime.timedelta [1](http://docs.python.org/2.6/library/datetime.html#datetime.timedelta) |
 | logdir        | str  | Full path to the log directory                |
@@ -47,7 +47,7 @@ switch on the all in one server.
     },
 
     "endpoint": "http://%s:8008/",
-    "templatedir": "/var/www/talook",
+    "templatedir": "/var/www/talook/templates/",
     "logdir": "/var/logs/talook/",
     "staticdir": "/srv/www/talook/static/"
 }
@@ -64,7 +64,7 @@ switch on the all in one server.
     },
 
     "endpoint": "http://%s:8008/",
-    "templatedir": "/var/www/talook",
+    "templatedir": "/var/www/talook/templates/",
     "cachedir": "/var/cache/talook/",
     "cachetime": {"hours": 1},
     "logdir": "/var/logs/talook/",
