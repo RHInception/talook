@@ -85,7 +85,7 @@
                 var host_endpoint = 'host/' + host + '.json';
                 $("#content").empty();
                 $("#anchors").empty();
-                $("#anchors").append('<h4>Stats for '+host+'</h4>');
+                $("#anchors").append('<h4>Stats for '+host+' [<a href="'+host_endpoint+'">json</a>]</h4>');
                 $.getJSON(host_endpoint, function(data) {
                     $.each(data, function(key, value) {
                         $( '#content' ).append('<a id="'+key+'"></a><h2>'+key+'</h2>');
