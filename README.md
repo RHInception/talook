@@ -27,14 +27,33 @@ switch on the all in one server.
 | Name          | Type | Value                                         |
 |---------------|------|-----------------------------------------------|
 | hosts         | dict | hostname: environment pairs                   |
-| endpoint      | str  | Endpoint url to pull json data from with a %s placeholder for hostname |
+| endpoint      | str  | Endpoint url to pull json data from with a %s placeholder for hostname   |
 | templatedir   | str  | Directory which holds the templates directory |
-| cachedir      | str  | Full path to the cache directory              |
+| cachedir      | str  | Full path to the cache directory. If this is empty the cache is disabled |
 | cachetime     | dict | kwargs for Python's datetime.timedelta [1](http://docs.python.org/2.6/library/datetime.html#datetime.timedelta) |
 | logdir        | str  | Full path to the log directory                |
 | staticdir     | str  | Full path to the static files directory       |
 
-### Example Configuration
+### Example Configurations
+
+#### Without Cache
+```json
+{
+    "hosts": {
+        "somehost.example.com": "prod",
+        "another.host.example.com": "prod",
+        "aqasystem.example.com": "qa",
+        "127.0.0.1": "dev"
+    },
+
+    "endpoint": "http://%s:8008/",
+    "templatedir": "/var/www/talook",
+    "logdir": "/var/logs/talook/",
+    "staticdir": "/srv/www/talook/static/"
+}
+```
+
+#### With Cache
 ```json
 {
     "hosts": {
@@ -52,7 +71,6 @@ switch on the all in one server.
     "staticdir": "/srv/www/talook/static/"
 }
 ```
-
 
 ## URLS
 

@@ -104,8 +104,16 @@ class BaseHandler(object):
 
         self._template_path = os.path.sep.join([os.path.realpath(
             self._conf['templatedir']), 'templates'])
-        self._cache_dir = os.path.realpath(self._conf['cachedir'])
-        self._cache_time = datetime.timedelta(**self._conf['cachetime'])
+        try:
+            self._cache_dir = os.path.realpath(self._conf['cachedir'])
+            self._cache_time = datetime.timedelta(**self._conf['cachetime'])
+            self._cache = True
+            self.logger.info(
+                'Caching in %s is enabled' % self.__class__.__name__)
+        except KeyError:
+            self._cache = False
+            self.logger.info(
+                'Caching in %s is disabled' % self.__class__.__name__)
 
     def render_template(self, name, **kwargs):
         """
@@ -122,7 +130,7 @@ class BaseHandler(object):
         source callable, save the result and return the results.
         """
         cache_name = os.path.sep.join([self._cache_dir, key + '.json'])
-        if os.path.exists(cache_name):
+        if self._cache and os.path.exists(cache_name):
             mtime = datetime.datetime.fromtimestamp(
                 os.stat(cache_name).st_mtime)
             now = datetime.datetime.now()
@@ -133,11 +141,13 @@ class BaseHandler(object):
                 return data
             else:
                 self.logger.info('Key "%s" is expired in cache.' % key)
+        else:
+            self.logger.info('Key "%s" was NOT in cache.' % key)
 
-        self.logger.info('Key "%s" was NOT in cache.' % key)
         try:
             data = source()
-            self.save_to_cache(key, data)
+            if self._cache:
+                self.save_to_cache(key, data)
             return data
         except Exception, ex:
             print ex
