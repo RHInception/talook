@@ -4,6 +4,7 @@
         <title>{{- title -}}</title>
         <script src="static/jquery-2.0.3.min.js"></script>
         <script src="static/bootstrap.min.js"></script>
+        <script src="static/talook.js"></script>
         <link href="static/bootstrap.min.css" rel="stylesheet">
         <link href="static/style.css" rel="stylesheet">
     </head>
@@ -18,8 +19,16 @@
 
             <!-- top header -->
 
+
             </ul>
           </div>
+	  <span class="pull-right">
+	    <ul class="nav">
+	      <li id="talook-info">
+		<a title="more information" rel="tooltip"><i class="icon-white icon-info-sign"></i></a></li>
+	      </li>
+	    </ul>
+	  </span>
         </div>
       </div>
     </div>
@@ -99,5 +108,44 @@
                 $("#anchors").show();
            };
     </script>
+
+
+    <!-- Help/More information -->
+    <div id="myModal" class="modal hide fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">x</button>
+        <h3 id="myModalLabel">Talook</h3>
+      </div>
+      <div class="modal-body">
+	<p>
+	  Talook is brought to you
+	  by <i><a href="http://developerblog.redhat.com/tag/inception/">Inception</a></i>,
+	  a team at <a href="http://www.redhat.com/">Red Hat</a>
+	  working to bring DevOps practices into IT.
+	</p>
+
+	<h3>Getting Help/Reporting Bugs</h3>
+
+	<ul>
+	  <li>
+	    <i class="icon icon-fire"></i> Please file all bugs on our issue tracker: <a href="https://github.com/RHInception/talook/issues">GitHub Issue Tracker</a>
+	  </li>
+	</ul>
+
+	<h4>You might also enjoy</h4>
+
+	<ul>
+	  <li><a href="https://github.com/RHInception/jsonstats"><i class="icon-search"></i> jsonstats</a></li>
+	</ul>
+
+      </div>
+      <div class="modal-footer">
+        <button class="btn" data-dismiss="modal" aria-hidden="true">Close</button>
+      </div>
+    </div>
+
+
+
+
     </body>
 </html>
