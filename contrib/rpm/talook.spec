@@ -6,7 +6,7 @@ BuildRoot: %{_tmppath}/%{name}-%{version}-%{release}-buildroot
 
 Name:           talook
 Version:        1.0.1
-Release:        3%{?dist}
+Release:        4%{?dist}
 Summary:        Single web front end for restfulstatsjson
 Group:          System Environment/Daemons
 
@@ -77,6 +77,9 @@ echo "OPTIONS=\"--listen 0.0.0.0 --port 8080 --config /etc/talook/config.json\""
 %attr(0755, -, -) %{_initrddir}/%{name}d
 
 %changelog
+* Mon Jan 13 2014 Tim Bielawa <tbielawa@redhat.com> - 1.0.1-4
+- New style and clickables
+
 * Wed Jan  8 2014 Tim Bielawa <tbielawa@redhat.com> - 1.0.1-3
 - Use relative paths instead for site style
 
