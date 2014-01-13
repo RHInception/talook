@@ -15,3 +15,7 @@ body {
        padding-right: 5px;
    }
 }
+
+#talook-info {
+    cursor: help;
+}
