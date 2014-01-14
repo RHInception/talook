@@ -5,4 +5,5 @@ $(document).ready(function(){
 
 
     $("[rel=tooltip]").tooltip({placement: 'bottom'});
+    $("[rel=tooltip_search]").tooltip({placement: 'right'});
 });

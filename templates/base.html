@@ -38,6 +38,10 @@
         <div class="container-fluid">
             <div class="row-fluid">
                 <div class="span3">
+		  <div class="input-prepend">
+		    <span class="add-on"><i class="icon icon-search"></i> </span><input title="PROTIP: You can use regular expressions!" rel="tooltip_search" id="hostfilter" type="text" placeholder="Filter hosts">
+		  </div>
+
                 <!--Sidebar content-->
                           <div class="well pre-scrollable sidebar-nav">
 				    <ul id="sidenav" class="nav nav-list">
@@ -60,6 +64,7 @@
         </div>
 
         <script>
+            CURRENT_ENV = null;
             var hosts = {};
             // Get the host list from the hosts local endpoint
             $.getJSON('hosts.json', function(data) {
@@ -67,35 +72,62 @@
                     hosts[key] = value;
                 });
             });
-            var envs = [];
+            var envs = ['All'];
+            add_topnav_env('All');
             // Get the envs list from the envs local endpoint
             $.getJSON('envs.json', function(data) {
                 $.each(data, function(index, value) {
                     // only add an env name if it isn't already in the list
                     if (envs.indexOf(value) == -1) {
                         envs.push(value);
-                        $( '#topnav' ).append( $( "<li id='env-" + value + "'>" ).append(
-                            '<a href="#" onClick="load_hosts(\''+value+'\')">'+value+'</a>'));
+                        add_topnav_env(value);
                     }
                 });
             });
 
+            function add_topnav_env(env) {
+                $( '#topnav' ).append( $( "<li id='env-" + env + "'>" ).append(
+                    '<a href="#" onClick="load_hosts(\''+env+'\')">'+env+'</a>'));
+            }
+
             function load_hosts(env) {
+                CURRENT_ENV = env;
                 $("li[id^='env-']").removeClass('active');
                 $("#env-" + env).addClass('active');
                 $("#sidenav").empty();
-                $("#sidenav").append( $('<li class="nav-header">Hosts</li>'));
                 var $env_hosts = [];
                 $.each(hosts, function(host, hostenv) {
-                    if (hostenv == env) {
+                    if (hostenv == env || env == 'All') {
                         $env_hosts.push(host);
                     };
                 });
                 $env_hosts.sort();
+                var $host_filter = new RegExp(get_host_filter());
                 $.each($env_hosts, function(i, host) {
-                    $("#sidenav").append( '<li><a href="#" onClick="load_stats(\''+host+'\')">'+host+'</a></li>');
+                    if ($host_filter.test(host)) {
+                        $("#sidenav").append( '<li><a href="#" onClick="load_stats(\''+host+'\')">'+host+'</a></li>');
+                    }
                 });
+                var num_hosts = $('#sidenav li').length;
+                $("#sidenav").prepend( $('<li class="nav-header">Hosts (' + num_hosts + ')</li>'));
             };
+
+            // Read the current filter from the filter input
+            function get_host_filter() {
+                if ($('#hostfilter').val()) {
+                    return $('#hostfilter').val();
+                } else {
+                    return ".*"
+                }
+            }
+
+            // Host filter callback for the input form event handler
+            function filter_hosts() {
+                load_hosts(CURRENT_ENV);
+            }
+
+            // Filter the hosts while typing in the filter input
+            $("#hostfilter").on("input", null, null, filter_hosts);
 
             function load_stats(host) {
                 var host_endpoint = 'host/' + host + '.json';
