@@ -6,4 +6,8 @@ $(document).ready(function(){
 
     $("[rel=tooltip]").tooltip({placement: 'bottom'});
     $("[rel=tooltip_search]").tooltip({placement: 'right'});
+
+    $("#clearfilter").click(function(event) {
+        $("#hostfilter").val("");
+    });
 });
