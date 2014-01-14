@@ -74,13 +74,15 @@
                     // only add an env name if it isn't already in the list
                     if (envs.indexOf(value) == -1) {
                         envs.push(value);
-                        $( '#topnav' ).append( $( '<li>' ).append(
+                        $( '#topnav' ).append( $( "<li id='env-" + value + "'>" ).append(
                             '<a href="#" onClick="load_hosts(\''+value+'\')">'+value+'</a>'));
                     }
                 });
             });
 
             function load_hosts(env) {
+                $("li[id^='env-']").removeClass('active');
+                $("#env-" + env).addClass('active');
                 $("#sidenav").empty();
                 $("#sidenav").append( $('<li class="nav-header">Hosts</li>'));
                 var $env_hosts = [];
