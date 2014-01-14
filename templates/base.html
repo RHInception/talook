@@ -133,7 +133,8 @@
                 var host_endpoint = 'host/' + host + '.json';
                 $("#content").empty();
                 $("#anchors").empty();
-                $("#anchors").append('<h4>Stats for '+host+' [<a href="'+host_endpoint+'">json</a>]</h4>');
+                $("#anchors").append('<h4>Stats for '+host+' [<a href="'+host_endpoint+'">json</a>]</h4><img src="static/loading.gif" id="loading">');
+                $("#anchors").show();
                 $.getJSON(host_endpoint, function(data) {
                     // each, WHERE: key = fact title string, value = fact hash
                     $.each(data, function(key, value) {
@@ -145,8 +146,8 @@
                             $( '#stat_'+key ).append('<li><b>'+fact_key+'</b>: '+value[fact_key]+'</li>');
                         });
                     });
+                    $('#loading').hide();
                 });
-                $("#anchors").show();
            };
     </script>
 
