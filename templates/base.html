@@ -83,10 +83,15 @@
             function load_hosts(env) {
                 $("#sidenav").empty();
                 $("#sidenav").append( $('<li class="nav-header">Hosts</li>'));
+                var $env_hosts = [];
                 $.each(hosts, function(host, hostenv) {
                     if (hostenv == env) {
-                        $("#sidenav").append( '<li><a href="#" onClick="load_stats(\''+host+'\')">'+host+'</a></li>');
+                        $env_hosts.push(host);
                     };
+                });
+                $env_hosts.sort();
+                $.each($env_hosts, function(i, host) {
+                    $("#sidenav").append( '<li><a href="#" onClick="load_stats(\''+host+'\')">'+host+'</a></li>');
                 });
             };
 
