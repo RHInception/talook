@@ -44,7 +44,7 @@ class TestQueryHostHandler(TestCase):
             buffer['headers'] = headers
 
         def get_from_cache_stub(key, source):
-            return '{"ok": {"result": "returned"}}'
+            return {"ok": {"result": "returned"}}
 
         self.instance.get_from_cache = get_from_cache_stub
 

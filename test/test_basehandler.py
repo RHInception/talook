@@ -1,5 +1,6 @@
 
 import datetime
+import json
 import os
 import tempfile
 
@@ -73,9 +74,8 @@ class TestBaseHandler(TestCase):
         nodata = lambda: '["NOTHING"]'
 
         self.instance._cache_dir = tempfile.gettempdir()
-        data = '{"test": "data"}'
-        assert self.instance.save_to_cache('test', data) is None
-        assert data == self.instance.get_from_cache('test', nodata)
-
-        assert '["NOTHING"]' == self.instance.get_from_cache(
-            'notavailable', nodata)
+        self.instance._cache = True
+        data = {"test": "data"}
+        json_data = json.dumps(data)
+        assert self.instance.save_to_cache('test', json_data) is None
+        assert json_data == self.instance.get_from_cache('test', nodata)

@@ -43,6 +43,30 @@ def create_logger(name, filename,
     return logger
 
 
+def make_get_request(endpoint):
+    """
+    Shortcut for making get requests.
+    """
+    try:
+        result = urllib.urlopen(endpoint)
+        if result.getcode() == 200:
+            try:
+                data = json.load(result)
+                return (result.getcode(), data)
+            except:
+                raise ValueError('Non JSON returned from remote service.')
+        else:
+            raise IOError('200 response not returned.')
+    except IOError:
+        return (
+            result.getcode(),
+            {'error': {'Error': 'Unable to reach the remote service.'}})
+    except ValueError:
+        return (
+            result.getcode(),
+            {'error': {'Error': 'Non JSON returned from remote service.'}})
+
+
 class Router(object):
     """
     URL Router.
@@ -137,35 +161,40 @@ class BaseHandler(object):
         Gets data from a local cache. If it's not there it will run the
         source callable, save the result and return the results.
         """
-        cache_name = os.path.sep.join([self._cache_dir, key + '.json'])
-        if self._cache and os.path.exists(cache_name):
-            mtime = datetime.datetime.fromtimestamp(
-                os.stat(cache_name).st_mtime)
-            now = datetime.datetime.now()
-            # If we are still in the cache time then use the cache
-            if now - self._cache_time < mtime:
-                self.logger.info('Found "%s" in cache.' % key)
-                data = open(cache_name, 'r').read()
-                return data
+        # If we have cache ...
+        if self._cache:
+            cache_name = os.path.sep.join([self._cache_dir, key + '.json'])
+            if not os.path.exists(cache_name):
+                self.logger.info('Key "%s" was NOT in cache.' % key)
+            # And the cache file exists ...
             else:
-                self.logger.info('Key "%s" is expired in cache.' % key)
-        else:
-            self.logger.info('Key "%s" was NOT in cache.' % key)
+                mtime = datetime.datetime.fromtimestamp(
+                    os.stat(cache_name).st_mtime)
+                now = datetime.datetime.now()
+                # If we are still in the cache time then use the cache
+                if now - self._cache_time < mtime:
+                    self.logger.info('Found "%s" in cache.' % key)
+                    data = open(cache_name, 'r').read()
+                    return json.loads(data)
+                else:
+                    self.logger.info('Key "%s" is expired in cache.' % key)
 
         try:
-            data = source()
-            if self._cache:
+            status_code, data = source()
+            if self._cache and status_code == 200:
                 self.save_to_cache(key, data)
+            else:
+                self.logger.warn(
+                    'Not saving %s to cache. Non 200 response.' % key)
             return data
         except Exception, ex:
             print ex
 
-    def save_to_cache(self, key, data):
+    def save_to_cache(self, key, json_data):
         """
         Holds data in local 'cache'.
         """
         cache_name = os.path.sep.join([self._cache_dir, key + '.json'])
-        json_data = json.loads(data)
         f = open(cache_name, 'w')
         f.write(json.dumps(json_data))
         f.close()
@@ -260,10 +289,9 @@ class QueryHostHandler(BaseHandler):
         if host in self._conf['hosts']:
             endpoint = self._conf['endpoint'] % host
             self.logger.info('Requesting data from %s' % endpoint)
-            call_obj = lambda: str(urllib.urlopen(endpoint).read())
+            call_obj = lambda: make_get_request(endpoint)
 
-            data = self.get_from_cache(host, call_obj)
-            json_data = json.loads(data)
+            json_data = self.get_from_cache(host, call_obj)
 
             start_response("200 OK", [("Content-Type", "application/json")])
             return json.dumps(json_data)
