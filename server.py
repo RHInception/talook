@@ -53,6 +53,7 @@ def make_get_request(endpoint):
     """
     Shortcut for making get requests.
     """
+    result = None
     try:
         result = urllib.urlopen(endpoint)
         if result.getcode() == 200:
@@ -64,12 +65,18 @@ def make_get_request(endpoint):
         else:
             raise IOError('200 response not returned.')
     except IOError:
+        result_code = -1
+        if result:
+            result_code = result.getcode()
         return (
-            result.getcode(),
+            result_code,
             {'error': {'Error': 'Unable to reach the remote service.'}})
     except ValueError:
+        result_code = -1
+        if result:
+            result_code = result.getcode()
         return (
-            result.getcode(),
+            result_code,
             {'error': {'Error': 'Non JSON returned from remote service.'}})
 
 
