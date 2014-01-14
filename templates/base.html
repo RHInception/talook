@@ -52,6 +52,9 @@
 
                 </div>
 
+                <div id="loading" class="span9 well hide">
+                </div>
+
                 <div class="span9">
                       <div id="anchors" class="well hide"></div>
 
@@ -129,12 +132,17 @@
             // Filter the hosts while typing in the filter input
             $("#hostfilter").on("input", null, null, filter_hosts);
 
+            function loading_screen(host) {
+                $("#loading").html("<h4>Loading stats for " + host + " <img src='static/loading.gif'/></h4>");
+                $("#loading").show();
+            }
+
             function load_stats(host) {
                 var host_endpoint = 'host/' + host + '.json';
-                $("#content").empty();
-                $("#anchors").empty();
-                $("#anchors").append('<h4>Stats for '+host+' [<a href="'+host_endpoint+'">json</a>]</h4><img src="static/loading.gif" id="loading">');
-                $("#anchors").show();
+                loading_screen(host);
+                $("#content").empty().hide();
+                $("#anchors").empty().hide();
+                $("#anchors").append('<h4>Stats for '+host+' [<a href="'+host_endpoint+'">json</a>]</h4>');
                 $.getJSON(host_endpoint, function(data) {
                     // each, WHERE: key = fact title string, value = fact hash
                     $.each(data, function(key, value) {
@@ -146,7 +154,9 @@
                             $( '#stat_'+key ).append('<li><b>'+fact_key+'</b>: '+value[fact_key]+'</li>');
                         });
                     });
-                    $('#loading').hide();
+                    $("#loading").hide();
+                    $("#anchors").show();
+                    $("#content").show();
                 });
            };
     </script>
