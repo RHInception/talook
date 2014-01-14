@@ -135,12 +135,14 @@
                 $("#anchors").empty();
                 $("#anchors").append('<h4>Stats for '+host+' [<a href="'+host_endpoint+'">json</a>]</h4>');
                 $.getJSON(host_endpoint, function(data) {
+                    // each, WHERE: key = fact title string, value = fact hash
                     $.each(data, function(key, value) {
                         $( '#content' ).append('<a id="'+key+'"></a><h2>'+key+'</h2>');
                         $( '#anchors' ).append('<a href="#'+key+'">'+key+'</a>&nbsp;');
                         $( '#content' ).append( $( '<ul id="stat_'+key+'"></ul>' ) );
-                        $.each(value, function(ikey, ivalue) {
-                          $( '#stat_'+key ).append('<li><b>'+ikey+'</b>: '+ivalue+'</li>');
+                        var fact_keys = Object.keys(value).sort();
+                        $.each(fact_keys, function(i, fact_key) {
+                            $( '#stat_'+key ).append('<li><b>'+fact_key+'</b>: '+value[fact_key]+'</li>');
                         });
                     });
                 });
