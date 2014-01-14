@@ -59,7 +59,7 @@ def make_get_request(endpoint):
         result = urllib2.urlopen(endpoint)
         try:
             data = json.load(result)
-            return (result.getcode(), data)
+            return (200, data)
         except ValueError, e:
             return (-1, {'error': {'Error': "Could not decode json from remote service: %s" % endpoint}})
 
