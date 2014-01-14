@@ -75,3 +75,6 @@ rpm: rpmcommon
 	@echo "$(PRODUCT) RPMs are built:"
 	@find rpm-build/noarch -maxdepth 2 -name $(PRODUCT)'*.rpm' | awk '{print "    " $$1}'
 	@echo "#############################################"
+
+tag:
+	git tag -s -m $(TAG) talook-$(TAG)
