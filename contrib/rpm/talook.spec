@@ -73,6 +73,8 @@ echo "OPTIONS=\"--listen 0.0.0.0 --port 8080 --config /etc/talook/config.json\""
 %config(noreplace) %{_sysconfdir}/sysconfig/talookd.conf
 %attr(0755, %{name}d, %{name}d) %dir %{_localstatedir}/cache/%{name}/
 %attr(0755, %{name}d, %{name}d) %dir %{_localstatedir}/log/%{name}/
+%attr(0755, %{name}d, %{name}d) %dir %{_localstatedir}/www/%{name}/static/
+%attr(0755, %{name}d, %{name}d) %dir %{_localstatedir}/www/%{name}/templates/
 %{_localstatedir}/www/*
 %attr(0755, -, -) %{_initrddir}/%{name}d
 
