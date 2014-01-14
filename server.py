@@ -17,6 +17,7 @@ except ImportError:
     import simplejson as json
 
 import urllib
+import urllib2
 
 import logging
 import logging.handlers
@@ -55,29 +56,37 @@ def make_get_request(endpoint):
     """
     result = None
     try:
-        result = urllib.urlopen(endpoint)
-        if result.getcode() == 200:
-            try:
-                data = json.load(result)
-                return (result.getcode(), data)
-            except:
-                raise ValueError('Non JSON returned from remote service.')
-        else:
-            raise IOError('200 response not returned.')
-    except IOError:
-        result_code = -1
-        if result:
-            result_code = result.getcode()
-        return (
-            result_code,
-            {'error': {'Error': 'Unable to reach the remote service.'}})
-    except ValueError:
-        result_code = -1
-        if result:
-            result_code = result.getcode()
-        return (
-            result_code,
-            {'error': {'Error': 'Non JSON returned from remote service.'}})
+        result = urllib2.urlopen(endpoint)
+        try:
+            data = json.load(result)
+            return (result.getcode(), data)
+        except ValueError, e:
+            return (-1, {'error': {'Error': "Could not decode json from remote service: %s" % endpoint}})
+
+    except urllib2.URLError, e:
+        # The reason for this error. It can be a message string or
+        # another exception instance (socket.error for remote URLs,
+        # OSError for local URLs).
+        #
+        # reason >The reason for this error. It can be a message
+        # string or another exception instance (socket.error for
+        # remote URLs, OSError for local URLs).
+        return (-1, {'error': {'Error': 'Could not connect to remote service: %s' % endpoint, 'Reason': str(e.reason)}})
+    except urllib2.HTTPError, e:
+        # Though being an exception (a subclass of URLError), an
+        # HTTPError can also function as a non-exceptional file-like
+        # return value (the same thing that urlopen() returns). This
+        # is useful when handling exotic HTTP errors, such as requests
+        # for authentication.
+        #
+        # code >An HTTP status code as defined in RFC 2616. This
+        # numeric value corresponds to a value found in the dictionary
+        # of codes as found in
+        # BaseHTTPServer.BaseHTTPRequestHandler.responses.
+        #
+        # reason >The reason for this error. It can be a message
+        # string or another exception instance.
+        return (e.code, {'error': {'Error': "Error %d while contacting endpoint: %s." % endpoint, 'Reason': str(e.reason), 'Code': e.code}})
 
 
 class Router(object):
