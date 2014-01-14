@@ -60,6 +60,10 @@
 
                 </div>
 
+                <div id="loadinganimation" class="pre-scrollable span9 hide">
+                    <img src="static/loading.gif"/>
+                </div>
+
                 <div id="content" class="pre-scrollable span9">
                 <!--Body content-->
                 </div>
@@ -133,7 +137,8 @@
             $("#hostfilter").on("input", null, null, filter_hosts);
 
             function loading_screen(host) {
-                $("#loading").html("<h4>Loading stats for " + host + " <img src='static/loading.gif'/></h4>");
+                $("#loadinganimation").show();
+                $("#loading").html("<h4>Loading stats for " + host + "</h4>");
                 $("#loading").show();
             }
 
@@ -155,6 +160,7 @@
                         });
                     });
                     $("#loading").hide();
+                    $("#loadinganimation").hide();
                     $("#anchors").show();
                     $("#content").show();
                 });
