@@ -9,5 +9,6 @@ $(document).ready(function(){
 
     $("#clearfilter").click(function(event) {
         $("#hostfilter").val("");
+        load_hosts(CURRENT_ENV);
     });
 });
