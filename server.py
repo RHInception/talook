@@ -6,6 +6,7 @@ Self contained stats consumer.
 import datetime
 import os
 import re
+import socket
 import threading
 import time
 
@@ -19,6 +20,11 @@ import urllib
 
 import logging
 import logging.handlers
+
+
+# Timeout if anything takes more than 3 seconds.
+# Future versions will likely make this configurable
+socket.setdefaulttimeout(3)
 
 
 def create_logger(name, filename,
