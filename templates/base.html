@@ -112,7 +112,7 @@
                 var $host_filter = new RegExp(get_host_filter());
                 $.each($env_hosts, function(i, host) {
                     if ($host_filter.test(host)) {
-                        $("#sidenav").append( '<li><a href="#" onClick="load_stats(\''+host+'\')">'+host+'</a></li>');
+                        $("#sidenav").append( '<li id="statsloader-' + host.replace(/\./g, '') + '" ><a href="#" onClick="load_stats(\''+host+'\')">'+host+'</a></li>');
                     }
                 });
                 var num_hosts = $('#sidenav li').length;
@@ -143,6 +143,9 @@
             }
 
             function load_stats(host) {
+                $("li[id^='statsloader-']").removeClass('active');
+                $("#statsloader-" + host.replace(/\./g, '')).addClass('active');
+
                 var host_endpoint = 'host/' + host + '.json';
                 loading_screen(host);
                 $("#content").empty().hide();
