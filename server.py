@@ -71,7 +71,7 @@ def make_get_request(endpoint):
         # reason >The reason for this error. It can be a message
         # string or another exception instance (socket.error for
         # remote URLs, OSError for local URLs).
-        return (-1, {'error': {'Error': 'Could not connect to remote service: %s' % endpoint, 'Reason': str(e.reason)}})
+        return (-1, {'error': {'Error': 'Could not connect to remote service: %s' % endpoint, 'Reason': str(e.reason), 'Suggestion': "Ensure that the host is listening for requests and that you're not blocked by network ACLs"}})
     except urllib2.HTTPError, e:
         # Though being an exception (a subclass of URLError), an
         # HTTPError can also function as a non-exceptional file-like
@@ -86,7 +86,7 @@ def make_get_request(endpoint):
         #
         # reason >The reason for this error. It can be a message
         # string or another exception instance.
-        return (e.code, {'error': {'Error': "Error %d while contacting endpoint: %s." % endpoint, 'Reason': str(e.reason), 'Code': e.code}})
+        return (e.code, {'error': {'Error': "Error %d while contacting endpoint: %s." % endpoint, 'Reason': str(e.reason), 'Code': e.code, 'Suggestion': "Ensure that the host is listening for requests and that you're not blocked by network ACLs"}})
 
 
 class Router(object):

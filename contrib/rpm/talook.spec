@@ -6,7 +6,7 @@ BuildRoot: %{_tmppath}/%{name}-%{version}-%{release}-buildroot
 
 Name:           talook
 Version:        1.0.1
-Release:        8%{?dist}
+Release:        9%{?dist}
 Summary:        Single web front end for restfulstatsjson
 Group:          System Environment/Daemons
 
@@ -80,6 +80,9 @@ echo "OPTIONS=\"--listen 0.0.0.0 --port 8080 --config /etc/talook/config.json\""
 %attr(0755, -, -) %{_initrddir}/%{name}d
 
 %changelog
+* Wed Jan 15 2014 Tim Bielawa <tbielawa@redhat.com> - 1.0.1-9
+- Useful error message suggestions
+
 * Wed Jan 15 2014 Tim Bielawa <tbielawa@redhat.com> - 1.0.1-8
 - Better loading graphic behavior, highlight selected host
 
