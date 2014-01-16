@@ -29,9 +29,9 @@ start() {
 
         pgrep -f ${app} > /dev/null
         RUNNING=$?
-        if [ $RUNNING -eq 0 ]; then     
+        if [ $RUNNING -eq 0 ]; then
             echo "[FAILED]"
-            echo    
+            echo
             echo "Reason: ${app_name} is already running."
             RETVAL=1
             exit 1;
@@ -42,7 +42,7 @@ start() {
         RETVAL=$?
         echo
         [ $RETVAL -eq 0 ] && touch /var/lock/subsys/talookd
-        
+
 }
 
 
@@ -65,7 +65,7 @@ case "$1" in
 	;;
 	status)
          	status -p ${pidfile} $app
-                RETVAL=$?
+		return $?
 	;;
 	restart)
 	        stop
