@@ -25,15 +25,15 @@ You can override the location by setting TALOOK_CONFIG_FILE environment variable
 switch on the all in one server.
 
 | Name          | Type | Requires | Value                                         |
-|---------------|------|-----------------------------------------------|
-| hosts         | dict | *True*  | hostname: environment pairs                   |
-| endpoint      | str  | *True*  | Endpoint url to pull json data from with a %s placeholder for hostname   |
-| templatedir   | str  | *True*  | Full path to the templates directory. |
-| cachedir      | str  | *False* |Full path to the cache directory. If this is empty the cache is disabled |
-| cachetime     | dict | *False* | kwargs for Python's datetime.timedelta [1](http://docs.python.org/2.6/library/datetime.html#datetime.timedelta) |
-| logdir        | str  | *True*  | Full path to the log directory                |
-| staticdir     | str  | *True*  | Full path to the static files directory       |
-| timeout       | int  | *False* |Seconds a request will wait before timing out  (default: 5) |
+|---------------|------|----------|-----------------------------------------------|
+| hosts         | dict | *True*   | hostname: environment pairs                   |
+| endpoint      | str  | *True*   | Endpoint url to pull json data from with a %s placeholder for hostname   |
+| templatedir   | str  | *True*   | Full path to the templates directory. |
+| cachedir      | str  | *False*  |Full path to the cache directory. If this is empty the cache is disabled |
+| cachetime     | dict | *False*  | kwargs for Python's datetime.timedelta [1](http://docs.python.org/2.6/library/datetime.html#datetime.timedelta) |
+| logdir        | str  | *True*   | Full path to the log directory                |
+| staticdir     | str  | *True*   | Full path to the static files directory       |
+| timeout       | int  | *False*  |Seconds a request will wait before timing out  (default: 5) |
 
 ### Example Configurations
 
