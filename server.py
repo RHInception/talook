@@ -56,7 +56,8 @@ def make_get_request(endpoint):
             data = json.load(result)
             return (200, data)
         except ValueError, e:
-            return (-1, {'error': {'Error': "Could not decode json from remote service: %s" % endpoint}})
+            msg = "Could not decode json from remote service: %s" % endpoint
+            return (-1, {'error': {'Error': msg}})
 
     except urllib2.URLError, e:
         # The reason for this error. It can be a message string or
@@ -66,7 +67,14 @@ def make_get_request(endpoint):
         # reason >The reason for this error. It can be a message
         # string or another exception instance (socket.error for
         # remote URLs, OSError for local URLs).
-        return (-1, {'error': {'Error': 'Could not connect to remote service: %s' % endpoint, 'Reason': str(e.reason), 'Suggestion': "Ensure that the host is listening for requests and that you're not blocked by network ACLs"}})
+        msg = 'Could not connect to remote service: %s' % endpoint
+        suggestion = (
+            "Ensure that the host is listening for "
+            "requests and that you're not blocked by network ACLs")
+        return (-1, {'error': {
+            'Error': msg,
+            'Reason': str(e.reason),
+            'Suggestion': suggestion}})
     except urllib2.HTTPError, e:
         # Though being an exception (a subclass of URLError), an
         # HTTPError can also function as a non-exceptional file-like
@@ -81,7 +89,15 @@ def make_get_request(endpoint):
         #
         # reason >The reason for this error. It can be a message
         # string or another exception instance.
-        return (e.code, {'error': {'Error': "Error %d while contacting endpoint: %s." % endpoint, 'Reason': str(e.reason), 'Code': e.code, 'Suggestion': "Ensure that the host is listening for requests and that you're not blocked by network ACLs"}})
+        error = "Error %d while contacting endpoint: %s." % endpoint
+        suggestion = (
+            "Ensure that the host is listening for "
+            "requests and that you're not blocked by network ACLs")
+        return (e.code, {'error': {
+            'Error':  error,
+            'Reason': str(e.reason),
+            'Code': e.code,
+            'Suggestion': suggestion}})
 
 
 class Router(object):
