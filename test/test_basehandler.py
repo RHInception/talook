@@ -2,6 +2,7 @@
 import datetime
 import json
 import os
+import socket
 import tempfile
 
 from . import TestCase
@@ -23,9 +24,12 @@ class TestBaseHandler(TestCase):
         """
         assert type(self.instance._conf) == dict
         for key in ['hosts', 'endpoint', 'templatedir',
-                    'cachedir', 'cachetime', 'logdir', 'staticdir']:
+                    'cachedir', 'cachetime', 'logdir',
+                    'staticdir', 'timeout']:
             assert key in self.instance._conf.keys()
         assert type(self.instance._conf['hosts']) == dict
+        assert self.instance._conf['timeout'] == int(
+            socket.getdefaulttimeout())
         #assert type(self.instance._conf['cachetime']) == dict
 
     def test_creation(self):

@@ -24,15 +24,16 @@ Configuration of the server is done in JSON and is by default kept in the curren
 You can override the location by setting TALOOK_CONFIG_FILE environment variable or using the -c/--config
 switch on the all in one server.
 
-| Name          | Type | Value                                         |
+| Name          | Type | Requires | Value                                         |
 |---------------|------|-----------------------------------------------|
-| hosts         | dict | hostname: environment pairs                   |
-| endpoint      | str  | Endpoint url to pull json data from with a %s placeholder for hostname   |
-| templatedir   | str  | Full path to the templates directory. |
-| cachedir      | str  | Full path to the cache directory. If this is empty the cache is disabled |
-| cachetime     | dict | kwargs for Python's datetime.timedelta [1](http://docs.python.org/2.6/library/datetime.html#datetime.timedelta) |
-| logdir        | str  | Full path to the log directory                |
-| staticdir     | str  | Full path to the static files directory       |
+| hosts         | dict | *True*  | hostname: environment pairs                   |
+| endpoint      | str  | *True*  | Endpoint url to pull json data from with a %s placeholder for hostname   |
+| templatedir   | str  | *True*  | Full path to the templates directory. |
+| cachedir      | str  | *False* |Full path to the cache directory. If this is empty the cache is disabled |
+| cachetime     | dict | *False* | kwargs for Python's datetime.timedelta [1](http://docs.python.org/2.6/library/datetime.html#datetime.timedelta) |
+| logdir        | str  | *True*  | Full path to the log directory                |
+| staticdir     | str  | *True*  | Full path to the static files directory       |
+| timeout       | int  | *False* |Seconds a request will wait before timing out  (default: 5) |
 
 ### Example Configurations
 
@@ -49,7 +50,8 @@ switch on the all in one server.
     "endpoint": "http://%s:8008/",
     "templatedir": "/var/www/talook/templates/",
     "logdir": "/var/logs/talook/",
-    "staticdir": "/srv/www/talook/static/"
+    "staticdir": "/srv/www/talook/static/",
+    "timeout": 3
 }
 ```
 
@@ -68,7 +70,8 @@ switch on the all in one server.
     "cachedir": "/var/cache/talook/",
     "cachetime": {"hours": 1},
     "logdir": "/var/logs/talook/",
-    "staticdir": "/srv/www/talook/static/"
+    "staticdir": "/srv/www/talook/static/",
+    "timeout": 3
 }
 ```
 

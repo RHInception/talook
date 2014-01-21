@@ -9,5 +9,6 @@
     "cachedir": "./cache",
     "cachetime": {"hours": 1},
     "logdir": "./logs",
-    "staticdir": "./static"
+    "staticdir": "./static",
+    "timeout": 3
 }

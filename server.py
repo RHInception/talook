@@ -23,11 +23,6 @@ import logging
 import logging.handlers
 
 
-# Timeout if anything takes more than 3 seconds.
-# Future versions will likely make this configurable
-socket.setdefaulttimeout(3)
-
-
 def create_logger(name, filename,
                   format='%(asctime)s - %(levelname)s - %(message)s'):
     """
@@ -168,6 +163,14 @@ class BaseHandler(object):
             self._cache = False
             self.logger.info(
                 'Caching in %s is disabled' % self.__class__.__name__)
+
+        try:
+            self._timeout = int(self._conf['timeout'])
+        except KeyError:
+            self.logger.debug('No timeout given. Defaulting to 5 seconds.')
+            self._timeout = 5
+        self.logger.info('Timeout set to %s seconds' % self._timeout)
+        socket.setdefaulttimeout(self._timeout)
 
     def render_template(self, name, **kwargs):
         """
