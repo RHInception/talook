@@ -94,7 +94,7 @@ def make_get_request(endpoint):
             "Ensure that the host is listening for "
             "requests and that you're not blocked by network ACLs")
         return (e.code, {'error': {
-            'Error':  error,
+            'Error': error,
             'Reason': str(e.reason),
             'Code': e.code,
             'Suggestion': suggestion}})
