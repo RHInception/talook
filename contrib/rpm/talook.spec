@@ -79,7 +79,7 @@ echo "OPTIONS=\"--listen 0.0.0.0 --port 8080 --config /etc/talook/config.json\""
 %attr(0755, %{name}d, %{name}d) %dir %{_localstatedir}/www/%{name}/templates/
 %{_localstatedir}/www/*
 %attr(0755, -, -) %{_initrddir}/%{name}d
-%attr(0755, root, root) %dir %{_docdir}/%{name}-%{version}/
+%attr(0755, root, root) %dir %{_usr}/share/doc/%{name}-%{version}/
 
 %changelog
 * Fri Jan 24 2014 Steve Milner <stevem@gnulinux.net> - 1.0.1-10
