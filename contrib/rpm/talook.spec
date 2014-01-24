@@ -66,7 +66,7 @@ echo "OPTIONS=\"--listen 0.0.0.0 --port 8080 --config /etc/talook/config.json\""
 
 
 %files
-%defattr(0644, root, root, -)
+%defattr(-, root, root, -)
 %doc LICENSE README.md
 %attr(0755, root, root) %{_bindir}/%{name}-server
 %attr(0755, root, root) %dir %{_sysconfdir}/%{name}/
