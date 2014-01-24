@@ -6,7 +6,7 @@ BuildRoot: %{_tmppath}/%{name}-%{version}-%{release}-buildroot
 
 Name:           talook
 Version:        1.0.1
-Release:        9%{?dist}
+Release:        10%{?dist}
 Summary:        Single web front end for restfulstatsjson
 Group:          System Environment/Daemons
 
@@ -55,6 +55,7 @@ mkdir -p $RPM_BUILD_ROOT%{_localstatedir}/cache/%{name}/
 mkdir -p $RPM_BUILD_ROOT%{_localstatedir}/log/%{name}/
 mkdir -p $RPM_BUILD_ROOT%{_localstatedir}/www/%{name}/
 mkdir -p $RPM_BUILD_ROOT%{_initrddir}/
+mkdir -p $RPM_BUILD_ROOT%{_docdir}/%{name}-%{version}/
 
 cp server.py $RPM_BUILD_ROOT/%{_bindir}/%{name}-server
 cp config.json $RPM_BUILD_ROOT/%{_sysconfdir}/%{name}/
@@ -78,8 +79,12 @@ echo "OPTIONS=\"--listen 0.0.0.0 --port 8080 --config /etc/talook/config.json\""
 %attr(0755, %{name}d, %{name}d) %dir %{_localstatedir}/www/%{name}/templates/
 %{_localstatedir}/www/*
 %attr(0755, -, -) %{_initrddir}/%{name}d
+%attr(0755, root, root) %dir %{_docdir}/%{name}-%{version}/
 
 %changelog
+* Fri Jan 24 2014 Steve Milner <stevem@gnulinux.net> - 1.0.1-10
+- Fixed directory permission.
+
 * Wed Jan 15 2014 Tim Bielawa <tbielawa@redhat.com> - 1.0.1-9
 - Useful error message suggestions
 
