@@ -65,7 +65,7 @@ case "$1" in
 	;;
 	status)
          	status -p ${pidfile} $app
-		return $?
+		exit $?
 	;;
 	restart)
 	        stop
