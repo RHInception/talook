@@ -21,19 +21,20 @@ Use *./setup.py test* from the main directory to execute unittests.
 
 ## Configuration
 Configuration of the server is done in JSON and is by default kept in the current directories config.json file.
-You can override the location by setting TALOOK_CONFIG_FILE environment variable or using the -c/--config
+You can override the location by setting `TALOOK_CONFIG_FILE` environment variable or using the `-c`/`--config`
 switch on the all in one server.
 
-| Name          | Type | Requires | Value                                         |
+| Name          | Type | Required | Value                                         |
 |---------------|------|----------|-----------------------------------------------|
-| hosts         | dict | *True*   | hostname: environment pairs                   |
-| endpoint      | str  | *True*   | Endpoint url to pull json data from with a %s placeholder for hostname   |
-| templatedir   | str  | *True*   | Full path to the templates directory. |
-| cachedir      | str  | *False*  |Full path to the cache directory. If this is empty the cache is disabled |
+| extranotes    | str  | *False*  | URL of external page with more info about a host with a `%s` placeholder for hostname |
+| cachedir      | str  | *False*  | Full path to the cache directory. If this is empty the cache is disabled |
 | cachetime     | dict | *False*  | kwargs for Python's datetime.timedelta [1](http://docs.python.org/2.6/library/datetime.html#datetime.timedelta) |
+| endpoint      | str  | *True*   | Endpoint url to pull json data from with a `%s` placeholder for hostname   |
+| hosts         | dict | *True*   | hostname: environment pairs                   |
 | logdir        | str  | *True*   | Full path to the log directory                |
 | staticdir     | str  | *True*   | Full path to the static files directory       |
-| timeout       | int  | *False*  |Seconds a request will wait before timing out  (default: 5) |
+| templatedir   | str  | *True*   | Full path to the templates directory |
+| timeout       | int  | *False*  | Seconds a request will wait before timing out  (default: 5) |
 
 ### Example Configurations
 
@@ -47,6 +48,7 @@ switch on the all in one server.
         "127.0.0.1": "dev"
     },
 
+    "extranotes": "http://munin.mysite.com/%s.html",
     "endpoint": "http://%s:8008/",
     "templatedir": "/var/www/talook/templates/",
     "logdir": "/var/logs/talook/",
@@ -65,6 +67,7 @@ switch on the all in one server.
         "127.0.0.1": "dev"
     },
 
+    "extranotes": "http://munin.mysite.com/%s.html",
     "endpoint": "http://%s:8008/",
     "templatedir": "/var/www/talook/templates/",
     "cachedir": "/var/cache/talook/",
@@ -104,8 +107,8 @@ There are two log file which are produced by a running instance.
 
 ### Simple
 1. Edit the configuration file
-2. Check to see what options you want to use with --help
-3. python server.py --listen 0.0.0.0 --port 8008 --config ./config.json
+2. Check to see what options you want to use with `--help`
+3. `python server.py --listen 0.0.0.0 --port 8008 --config ./config.json`
 
 #### Standalone Server Options
 ```
@@ -124,21 +127,22 @@ Options:
 
 
 ### In Apache
-mod_wsgi can be used with Apache to mount talook. While the standalone server
-will work just fine for some environments it's important to remember it's
-single threaded and won't perform well under some conditions. There are example files
-in contrib/apache/ which can help set an instance up. Note that the wsgi
-process owner will need to be able to write and/or read from the locations
-listed in the config.json just like in the standalone server!
+**mod_wsgi** can be used with Apache to mount talook. While the
+standalone server will work just fine for some environments it's
+important to remember it's single threaded and won't perform well
+under some conditions. There are example files in `contrib/apache/`
+which can help set an instance up. **Note** that the wsgi process
+owner will need to be able to write and/or read from the locations
+listed in the `config.json` just like in the standalone server!
 
 * **talook.wsgi**: The WSGI file that mod_wsgi will use.
 * **talook.conf**: The configuration file which mounts the WSGI application.
 
 #### SELinux
-One or both may be needed when using mod_wsgi on Apache if SELinux is enabled.
+One or both may be needed when using **mod_wsgi** on Apache if SELinux is enabled.
 
-* setsebool -P httpd_can_network_connect 1
-* semanage port -a -t http_port_t -p tcp 8008
+* `setsebool -P httpd_can_network_connect 1`
+* `semanage port -a -t http_port_t -p tcp 8008`
 
 
 ### Packaging
