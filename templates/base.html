@@ -72,6 +72,7 @@
 
         <script>
             CURRENT_ENV = null;
+            EXTRANOTES = "{{- extranotes -}}";
             var hosts = {};
             // Get the host list from the hosts local endpoint
             $.getJSON('hosts.json', function(data) {
@@ -142,6 +143,15 @@
                 $("#loading").show();
             }
 
+	    function extranotes_link(host) {
+                if ( EXTRANOTES != "") {
+                    var en_url = EXTRANOTES.replace(/%s/, host)
+                    return " [<a href='" + en_url + "' target=_blank>extra notes</a>]"
+                } else {
+                    return ""
+                }
+            }
+
             function load_stats(host) {
                 $("li[id^='statsloader-']").removeClass('active');
                 $("#statsloader-" + host.replace(/\./g, '')).addClass('active');
@@ -150,7 +160,7 @@
                 loading_screen(host);
                 $("#content").empty().hide();
                 $("#anchors").empty().hide();
-                $("#anchors").append('<h4>Stats for '+host+' [<a href="'+host_endpoint+'">json</a>]</h4>');
+                $("#anchors").append('<h4>Stats for '+host+' [<a href="'+host_endpoint+'">json</a>]' + extranotes_link(host) + '</h4>');
                 $.getJSON(host_endpoint, function(data) {
                     // each, WHERE: key = fact title string, value = fact hash
                     $.each(data, function(key, value) {

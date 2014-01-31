@@ -26,10 +26,10 @@ switch on the all in one server.
 
 | Name          | Type | Required | Value                                         |
 |---------------|------|----------|-----------------------------------------------|
-| extranotes    | str  | *False*  | URL of external page with more info about a host with a `%s` placeholder for hostname |
 | cachedir      | str  | *False*  | Full path to the cache directory. If this is empty the cache is disabled |
 | cachetime     | dict | *False*  | kwargs for Python's datetime.timedelta [1](http://docs.python.org/2.6/library/datetime.html#datetime.timedelta) |
 | endpoint      | str  | *True*   | Endpoint url to pull json data from with a `%s` placeholder for hostname   |
+| extranotes    | str  | *False*  | URL of external page with more info about a host with a `%s` placeholder for hostname |
 | hosts         | dict | *True*   | hostname: environment pairs                   |
 | logdir        | str  | *True*   | Full path to the log directory                |
 | staticdir     | str  | *True*   | Full path to the static files directory       |
