@@ -181,6 +181,11 @@ class BaseHandler(object):
                 'Caching in %s is disabled' % self.__class__.__name__)
 
         try:
+            self._extranotes = str(self._conf['extranotes'])
+        except KeyError:
+            self._extranotes = str('')
+
+        try:
             self._timeout = int(self._conf['timeout'])
         except KeyError:
             self.logger.debug('No timeout given. Defaulting to 5 seconds.')
@@ -289,7 +294,7 @@ class IndexHandler(BaseHandler):
         Handles the index page.
         """
         start_response("200 OK", [("Content-Type", "text/html")])
-        return self.render_template('base.html', title='Talook')
+        return self.render_template('base.html', title='Talook', extranotes=self._extranotes)
 
 
 class ListHostsHandler(BaseHandler):
