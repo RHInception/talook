@@ -294,7 +294,8 @@ class IndexHandler(BaseHandler):
         Handles the index page.
         """
         start_response("200 OK", [("Content-Type", "text/html")])
-        return self.render_template('base.html', title='Talook', extranotes=self._extranotes)
+        return self.render_template(
+            'base.html', title='Talook', extranotes=self._extranotes)
 
 
 class ListHostsHandler(BaseHandler):
