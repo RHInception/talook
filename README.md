@@ -96,6 +96,9 @@ Returns stats for a specific host in JSON format. Cache is used if available.
 ### /statict/*$FILENAME*
 Returns a static file from the static directory.
 
+### /#!/host/*$HOSTNAME*
+Returns stats for a specific host in the UI. This is helpful for bookmarking hosts.
+
 
 ## Logging
 There are two log file which are produced by a running instance.
