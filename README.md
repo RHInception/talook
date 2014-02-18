@@ -10,6 +10,7 @@ Single web front end for [jsonstats](https://github.com/RHInception/jsonstats).
 * Simple filesystem based caching
 * Access and application logging
 * JSON based configuration
+* Bookmarkable hosts
 * host and environment REST endpoints
 * Ajaxy
 * Unit tested

@@ -11,19 +11,24 @@ $(document).ready(function(){
         $("#hostfilter").val("");
         load_hosts(CURRENT_ENV);
     });
+    // Execute it at the start
+    load_from_hash();
 });
-
-
 
 CURRENT_ENV = null;
 EXTRANOTES = "{{- extranotes -}}";
 var hosts = {};
+
 // Get the host list from the hosts local endpoint
-$.getJSON('hosts.json', function(data) {
-    $.each(data, function(key, value) {
-        hosts[key] = value;
-    });
-});
+$.ajax({
+    url: 'hosts.json',
+    async: false,
+    success: function(data) {
+        $.each(data, function(key, value) {
+            hosts[key] = value;
+        });
+}});
+
 var envs = ['All'];
 add_topnav_env('All');
 // Get the envs list from the envs local endpoint
@@ -99,12 +104,11 @@ function extranotes_link(host) {
 function load_stats(host) {
     $("li[id^='statsloader-']").removeClass('active');
     $("#statsloader-" + host.replace(/\./g, '')).addClass('active');
-
     var host_endpoint = 'host/' + host + '.json';
     loading_screen(host);
     $("#content").empty().hide();
     $("#anchors").empty().hide();
-    $("#anchors").append('<h4>Stats for '+host+' [<a href="'+host_endpoint+'">json</a>]' + extranotes_link(host) + '</h4>');
+    $("#anchors").append('<h4>Stats for '+host+' [<a href="'+host_endpoint+'">json</a>]' + extranotes_link(host) + '[<a href="/#!/host/'+host+'/">bookmark</a>]</h4>');
     $.getJSON(host_endpoint, function(data) {
         // each, WHERE: key = fact title string, value = fact hash
         $.each(data, function(key, value) {
@@ -122,3 +126,19 @@ function load_stats(host) {
         $("#content").show();
     });
 };
+
+function load_from_hash() {
+    var parts = document.location.hash.split('/');
+    if (parts[1] == 'host') {
+        if (hosts.hasOwnProperty(parts[2])) {
+            load_stats(parts[2]);
+        } else {
+            alert('Unknown host.');
+        }
+    }
+};
+
+// Hash router
+$(window).on('hashchange', function(e) {
+    load_from_hash();
+});
