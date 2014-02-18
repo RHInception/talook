@@ -16,7 +16,8 @@ $(document).ready(function(){
 });
 
 CURRENT_ENV = null;
-EXTRANOTES = "{{- extranotes -}}";
+//EXTRANOTES = "{{- extranotes -}}";
+EXTRANOTES = "";
 var hosts = {};
 
 // Get the host list from the hosts local endpoint
