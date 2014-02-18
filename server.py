@@ -59,6 +59,30 @@ def make_get_request(endpoint):
             msg = "Could not decode json from remote service: %s" % endpoint
             return (-1, {'error': {'Error': msg}})
 
+    except urllib2.HTTPError, e:
+        # Though being an exception (a subclass of URLError), an
+        # HTTPError can also function as a non-exceptional file-like
+        # return value (the same thing that urlopen() returns). This
+        # is useful when handling exotic HTTP errors, such as requests
+        # for authentication.
+        #
+        # code >An HTTP status code as defined in RFC 2616. This
+        # numeric value corresponds to a value found in the dictionary
+        # of codes as found in
+        # BaseHTTPServer.BaseHTTPRequestHandler.responses.
+        #
+        # reason >The reason for this error. It can be a message
+        # string or another exception instance.
+        error = "Error %d while contacting endpoint: %s." % (
+            e.code, endpoint)
+        suggestion = (
+            "Ensure that the host is listening for "
+            "requests and that you're not blocked by network ACLs")
+        return (e.code, {'error': {
+            'Error': error,
+            'Reason': str(e.reason),
+            'Code': e.code,
+            'Suggestion': suggestion}})
     except urllib2.URLError, e:
         # The reason for this error. It can be a message string or
         # another exception instance (socket.error for remote URLs,
@@ -74,29 +98,6 @@ def make_get_request(endpoint):
         return (-1, {'error': {
             'Error': msg,
             'Reason': str(e.reason),
-            'Suggestion': suggestion}})
-    except urllib2.HTTPError, e:
-        # Though being an exception (a subclass of URLError), an
-        # HTTPError can also function as a non-exceptional file-like
-        # return value (the same thing that urlopen() returns). This
-        # is useful when handling exotic HTTP errors, such as requests
-        # for authentication.
-        #
-        # code >An HTTP status code as defined in RFC 2616. This
-        # numeric value corresponds to a value found in the dictionary
-        # of codes as found in
-        # BaseHTTPServer.BaseHTTPRequestHandler.responses.
-        #
-        # reason >The reason for this error. It can be a message
-        # string or another exception instance.
-        error = "Error %d while contacting endpoint: %s." % endpoint
-        suggestion = (
-            "Ensure that the host is listening for "
-            "requests and that you're not blocked by network ACLs")
-        return (e.code, {'error': {
-            'Error': error,
-            'Reason': str(e.reason),
-            'Code': e.code,
             'Suggestion': suggestion}})
 
 
