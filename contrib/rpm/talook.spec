@@ -5,8 +5,8 @@ BuildRoot: %{_tmppath}/%{name}-%{version}-%{release}-buildroot
 
 
 Name:           talook
-Version:        1.0.1
-Release:        11%{?dist}
+Version:        1.1.0
+Release:        1%{?dist}
 Summary:        Simple web frontend for jsonstats
 Group:          System Environment/Daemons
 
@@ -82,6 +82,12 @@ echo "OPTIONS=\"--listen 0.0.0.0 --port 8080 --config /etc/talook/config.json\""
 %attr(0755, root, root) %dir %{_usr}/share/doc/%{name}-%{version}/
 
 %changelog
+* Tue Feb 18 2014 Steve Milner <stevem@gnulinux.net>- 1.1.0-1
+- Host bookmarking added.
+- Timeouts for network responses are now configurable.
+- Multiple UI enhancements.
+- Cache is now off by default.
+
 * Wed Jan 29 2014 Tim Bielawa <tbielawa@redhat.com> - 1.0.1-11
 - Fix short description, s/Single/Simple/
 
