@@ -8,7 +8,7 @@ from setuptools import setup
 
 setup(
     name="talook",
-    version="1.0.1",
+    version="1.1.0",
     author="Steve Milner",
     url="https://github.com/RHInception/talook",
     license="MIT",

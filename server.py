@@ -80,7 +80,7 @@ def make_get_request(endpoint):
             "requests and that you're not blocked by network ACLs")
         return (e.code, {'error': {
             'Error': error,
-            'Reason': str(e.reason),
+            'Reason': str(e.msg),
             'Code': e.code,
             'Suggestion': suggestion}})
     except urllib2.URLError, e:
