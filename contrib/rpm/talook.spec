@@ -117,10 +117,10 @@ echo "OPTIONS=\"--listen 0.0.0.0 --port 8080 --config /etc/talook/config.json\""
 * Wed Jan  8 2014 Tim Bielawa <tbielawa@redhat.com> - 1.0.1-3
 - Use relative paths instead for site style
 
-* Wed Dec 13 2013 Steve Milner <stevem@gnulinux.net>- 1.0.1-2
+* Fri Dec 13 2013 Steve Milner <stevem@gnulinux.net>- 1.0.1-2
 - Fix to handle directory permissions better.
 
-* Wed Dec 12 2013 Steve Milner <stevem@gnulinux.net>- 1.0.1-1
+* Thu Dec 12 2013 Steve Milner <stevem@gnulinux.net>- 1.0.1-1
 - Update for upstream release.
 
 * Wed Nov 20 2013 Steve Milner <stevem@gnulinux.net>- 1.0.0-4
