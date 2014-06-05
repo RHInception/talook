@@ -9,3 +9,4 @@ script:
     - "nosetests -v"
 notifications:
     email: false
+    flowdock: 252ee174a64c87d75f2846cf694ecad6
